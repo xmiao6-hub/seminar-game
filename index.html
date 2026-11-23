@@ -2,7 +2,7 @@
 <title>Open Text Room</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Jost:wght@400;500;700&family=Libre+Franklin:wght@300;400;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,300;1,6..72,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Jost:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,300;1,6..72,400&display=swap">
 <style>
 /* Layout concept: a six-room gallery seen over a pixel character's shoulder. Words are printed on tinted acrylic sheets hung in depth. The interface is a few quiet instrument panels at the edges. */
 :root {
@@ -12,20 +12,20 @@
   --cobalt: #1f3ff0;
   --glass: rgba(244, 246, 248, 0.86);
   --rule: rgba(18, 21, 26, 0.2);
-  --f-display: 'Libre Franklin', 'Helvetica Neue', Arial, sans-serif;
+  --f-display: Futura, 'Futura PT', 'Jost', 'Century Gothic', sans-serif;
   --f-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
-  --f-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  --f-mono: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
   --f-reg: 'Jost', 'Futura PT', Futura, 'Century Gothic', sans-serif;
   --f-futura: Futura, 'Futura PT', 'Jost', 'Century Gothic', 'Avenir Next', sans-serif;
   color-scheme: light;
 }
 html, body { height: 100%; }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 400 14px/1.45 var(--f-display); overflow: hidden; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 14px/1.45 var(--f-reg); overflow: hidden; -webkit-font-smoothing: antialiased; }
 #stage { position: fixed; inset: 0; }
 #gl { display: block; width: 100%; height: 100%; touch-action: none; outline: none; }
 
 /* the three voices */
-.s0 { font: 900 1em var(--f-display); letter-spacing: -0.02em; }
+.s0 { font: 700 1em var(--f-display); letter-spacing: -0.01em; }
 .s1 { font: italic 300 1.14em var(--f-serif); }
 .s2 { font: 500 0.72em var(--f-mono); text-transform: uppercase; letter-spacing: 0.08em; }
 .cobalt { color: var(--cobalt); }
@@ -38,7 +38,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 400 14px/1.
 .btn:focus-visible, .mini:focus-visible, #enter:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
 
 #brand { top: max(14px, env(safe-area-inset-top, 0px)); left: max(16px, env(safe-area-inset-left, 0px)); display: grid; gap: 6px; max-width: 46vw; pointer-events: none; }
-#brand b { font: 900 15px/1 var(--f-display); letter-spacing: -0.01em; }
+#brand b { font: 700 16px/1 var(--f-display); letter-spacing: 0.01em; }
 #hint { font: 400 11px/1.5 var(--f-mono); color: var(--ink-soft); max-width: 300px; }
 #tools { top: max(14px, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); display: flex; gap: 6px; }
 
@@ -55,7 +55,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 400 14px/1.
 .ln { line-height: 1.25; overflow-wrap: anywhere; }
 .ln.gap { margin-top: 10px; }
 .ln .br { font: 500 13px var(--f-mono); color: var(--cobalt); padding: 0 6px; font-style: normal; }
-.depth { font: 400 13px/1.7 var(--f-display); color: var(--ink-soft); overflow-wrap: anywhere; }
+.depth { font: 400 13px/1.7 var(--f-reg); color: var(--ink-soft); overflow-wrap: anywhere; }
 .depth .sep { color: var(--rule); padding: 0 5px; }
 #hidSec[hidden] { display: none !important; }
 .meter { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; }
@@ -89,6 +89,25 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
 #map { bottom: max(14px, env(safe-area-inset-bottom, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); width: 208px; height: 108px; background: var(--glass); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid var(--rule); display: block; }
 #toast { position: fixed; z-index: 6; left: 50%; top: 24%; transform: translateX(-50%); font: 500 12px var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; background: var(--ink); color: #f3f4f1; padding: 8px 12px; opacity: 0; transition: opacity 0.25s; pointer-events: none; white-space: nowrap; }
 #toast.on { opacity: 1; }
+.chip.locked, .sw.locked { cursor: not-allowed; opacity: 0.5; position: relative; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.75) 0 3px, transparent 3px 7px); }
+.chip.locked::after { content: attr(data-m); margin-left: 6px; font-size: 9px; color: var(--ink-soft); }
+.avhint { margin: 10px 0 0; grid-column: 2; }
+.avhint.warn { color: #b3261e; }
+#mreward { font: 500 10.5px/1.3 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin: 0; }
+#mreward b { color: var(--ink); font-weight: 700; }
+#mission.min #mreward { display: none; }
+#mission.win #mreward, #mission.win #mreward b { color: #fff; }
+#reward { position: fixed; z-index: 30; left: 50%; top: 18%; transform: translate(-50%, -12px); opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.4s cubic-bezier(.2,1.4,.4,1); display: grid; grid-template-columns: auto 1fr; gap: 14px 18px; align-items: center; width: min(420px, calc(100vw - 32px)); padding: 16px 18px; background: #fbfbf9; border: 1px solid var(--ink); box-shadow: 8px 8px 0 rgba(255,63,164,0.28); }
+#reward.on { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+#reward canvas { width: 72px; height: 96px; image-rendering: pixelated; background: repeating-linear-gradient(0deg, rgba(18,21,26,0.04) 0 1px, transparent 1px 8px); }
+#reward .rw-t { display: grid; gap: 6px; }
+#reward .rw-name { font: 700 22px/1.1 var(--f-display); }
+#reward .rw-pts { font: 500 11px/1.3 var(--f-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+#reward .rw-btns { grid-column: 1 / -1; display: flex; gap: 8px; justify-content: flex-end; }
+#reward .rw-btns .btn.primary { background: var(--ink); color: #f3f4f1; border-color: var(--ink); }
+.confetti { position: fixed; z-index: 29; left: 50%; top: 24%; width: 10px; height: 14px; pointer-events: none; mix-blend-mode: multiply; animation: conf 1.5s cubic-bezier(.15,.6,.3,1) forwards; }
+@keyframes conf { from { transform: translate(0, 0) rotate(0); opacity: 1; } to { transform: translate(var(--cx), var(--cy)) rotate(var(--cr)); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .confetti { display: none; } #reward { transition: opacity 0.3s; } }
 #map { cursor: pointer; }
 #map:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
 #who { font: 400 11px/1.45 var(--f-mono); color: var(--ink-soft); max-width: 320px; }
@@ -107,26 +126,95 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
 .pzlist .x { grid-row: 1 / span 2; grid-column: 2; align-self: start; }
 .namebox { display: grid; gap: 8px; border-top: 1px solid var(--ink); padding-top: 18px; }
 .namerow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-#pname { font: 700 18px/1.2 var(--f-display); padding: 9px 11px; border: 1px solid var(--ink); background: #fbfbf9; color: var(--ink); border-radius: 0; width: min(320px, 100%); min-width: 0; }
+#pname { font: 500 18px/1.2 var(--f-reg); padding: 9px 11px; border: 1px solid var(--ink); background: #fbfbf9; color: var(--ink); border-radius: 0; width: min(320px, 100%); min-width: 0; }
 #pname:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
 
-#pad { position: fixed; z-index: 6; left: max(16px, env(safe-area-inset-left, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px)); width: 104px; height: 104px; border-radius: 50%; border: 1px solid var(--rule); background: var(--glass); display: block; touch-action: none; }
-#knob { position: absolute; left: 50%; top: 50%; width: 38px; height: 38px; border-radius: 50%; background: var(--ink); transform: translate(-50%, -50%); }
+#pad { position: fixed; z-index: 6; left: max(16px, env(safe-area-inset-left, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px)); width: 112px; height: 112px; border-radius: 50%; display: block; touch-action: none; cursor: grab;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.55) 0 30%, rgba(244,246,248,0.82) 31% 100%); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px rgba(18,21,26,0.22), inset 0 -10px 22px rgba(18,21,26,0.06), 0 10px 26px rgba(18,21,26,0.14); transition: box-shadow 0.2s; }
+#pad::before { content: ''; position: absolute; inset: 15px; border-radius: 50%; border: 1px dashed rgba(240,40,127,0.4); }
+#pad::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: linear-gradient(rgba(18,21,26,0.12), rgba(18,21,26,0.12)) center / 1px 62% no-repeat, linear-gradient(90deg, rgba(18,21,26,0.12), rgba(18,21,26,0.12)) center / 62% 1px no-repeat; }
+#pad .pa { position: absolute; width: 0; height: 0; border: 5px solid transparent; opacity: 0.55; transition: opacity 0.2s; }
+#pad .pa.n { left: 50%; top: 6px; margin-left: -5px; border-bottom: 7px solid #f0287f; border-top: 0; }
+#pad .pa.s { left: 50%; bottom: 6px; margin-left: -5px; border-top: 7px solid #f0287f; border-bottom: 0; }
+#pad .pa.w { top: 50%; left: 6px; margin-top: -5px; border-right: 7px solid #f0287f; border-left: 0; }
+#pad .pa.e { top: 50%; right: 6px; margin-top: -5px; border-left: 7px solid #f0287f; border-right: 0; }
+#pad.on { cursor: grabbing; box-shadow: inset 0 0 0 1.5px #f0287f, inset 0 -10px 22px rgba(240,40,127,0.08), 0 12px 30px rgba(240,40,127,0.22); }
+#pad.on .pa { opacity: 0.9; }
+#knob { position: absolute; z-index: 1; left: 50%; top: 50%; width: 44px; height: 44px; border-radius: 50%; transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 38% 32%, #ff8cc0 0 16%, #f0287f 64%); box-shadow: 0 6px 16px rgba(240,40,127,0.35), inset 0 1px 0 rgba(255,255,255,0.35); transition: background 0.2s; }
+#knob::after { content: ''; position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px 0 0 -4px; border-radius: 50%; background: #f3f4f1; box-shadow: 0 0 0 4px rgba(243,244,241,0.14); }
+#pad.on #knob { background: radial-gradient(circle at 38% 32%, #ff6aa8 0 16%, #c8136a 64%); }
 @media (pointer: coarse) { #pad { display: block; } #hint { display: none; } }
 
 #intro { position: fixed; inset: 0; z-index: 20; overflow-y: auto; background: rgba(223, 227, 230, 0.8); -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px); padding-block: max(28px, env(safe-area-inset-top, 0px)) max(28px, env(safe-area-inset-bottom, 0px)); padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); display: grid; place-items: center; }
-.card { width: min(860px, 100%); display: grid; gap: 26px; }
-.card h1 { margin: 0; font-size: clamp(28px, 6vw, 60px); line-height: 1.25; font-weight: 400; text-wrap: balance; }
-.card h1 span { margin-right: 0.08em; }
+.card { width: min(1040px, 100%); display: grid; gap: 26px; }
+/* the headline is set like a small installation: lines shifted on a grid, two acrylic tints, "open" left open and "closed" boxed in */
+.card h1 { margin: 4px 0 0; font-size: clamp(30px, 6.6vw, 74px); line-height: 1; font-weight: 400; display: grid; gap: 0.16em; isolation: isolate; }
+.hl { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.22em; }
+.hl.l2 { padding-left: 11%; }
+.hl.l3 { padding-left: 3%; align-items: center; }
+.hl.l4 { justify-content: flex-end; padding-right: 2%; }
+.hw { display: inline-block; position: relative; }
+.hw.big { font-size: 1.28em; }
+.hw.mid { font-size: 1.12em; }
+.hw.huge { font-size: 1.55em; line-height: 0.9; }
+.hw.tiny { font-size: 0.4em; letter-spacing: 0.14em; }
+.stack { display: inline-grid; gap: 0.18em; align-self: flex-start; margin-top: 0.42em; font-size: 0.38em; }
+.stack .s2 { font-size: 1em; letter-spacing: 0.16em; }
+.hw.sheet::before { content: ''; position: absolute; z-index: -1; left: -0.14em; right: -0.18em; top: 0.38em; bottom: -0.08em; background: var(--tint); mix-blend-mode: multiply; }
+.hw.t-pink { --tint: rgba(255, 63, 164, 0.24); }
+.hw.t-blue { --tint: rgba(47, 86, 255, 0.2); }
+.hw.t-green { --tint: rgba(39, 224, 164, 0.3); }
+.hw.boxed { padding: 0.02em 0.12em 0.08em; box-shadow: inset 0 0 0 0.045em var(--ink); }
+.hw.cobalt { color: #f0287f; }
+.hl-note { font: 500 10.5px/1.4 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); align-self: center; margin-left: 0.6em; }
+@media (prefers-reduced-motion: no-preference) {
+  .hw, .stack { animation: hwIn 0.7s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--d, 0) * 55ms); }
+  @keyframes hwIn { from { opacity: 0; transform: translate(calc(var(--dx, 0) * 1px), 0.25em); } to { opacity: 1; transform: none; } }
+}
+.card h1 { position: relative; }
+.hdeco { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+.acr { position: absolute; width: 0.92em; height: 1.18em; mix-blend-mode: multiply; border: 1px solid rgba(255,255,255,0.7); box-shadow: inset 0 0 0 1px rgba(18,21,26,0.06); }
+.acr::after { content: ''; position: absolute; width: 0.07em; height: 0.07em; border-radius: 50%; top: 0.07em; left: 0.07em; background: rgba(18,21,26,0.35); box-shadow: 0.71em 0 0 rgba(18,21,26,0.35); }
+.acr.a1 { right: 9%; top: -0.12em; background: rgba(255,176,46,0.34); transform: rotate(-4deg); }
+.acr.a2 { right: 3.5%; top: 0.22em; background: rgba(47,86,255,0.22); transform: rotate(3deg); }
+.acr.a3 { right: 13%; top: 0.62em; width: 0.66em; height: 0.8em; background: rgba(39,224,164,0.3); transform: rotate(7deg); }
+.spec { position: absolute; right: 2%; top: 51%; display: grid; gap: 6px; font: 500 10.5px/1.2 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); text-align: right; }
+.spec b { font-weight: 500; color: var(--ink); }
+.spec i { font-style: normal; display: inline-block; width: 18px; border-top: 1px solid var(--ink-soft); vertical-align: middle; margin: 0 6px 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  .acr { animation: drift 9s ease-in-out infinite alternate; }
+  .acr.a2 { animation-duration: 11s; animation-delay: -3s; }
+  .acr.a3 { animation-duration: 13s; animation-delay: -6s; }
+  @keyframes drift { from { translate: 0 0; } to { translate: -0.06em 0.08em; } }
+}
+@media (max-width: 620px) { .hdeco { display: none; } }
+@media (max-width: 620px) { .card h1 { font-size: 9.6vw; } .hl.l2 { padding-left: 6%; } .hl.l4 { justify-content: flex-start; padding-left: 4%; } .hw.tiny, .stack { font-size: 0.44em; } }
 .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 26px; border-top: 1px solid var(--ink); padding-top: 18px; }
 .cols > div { min-width: 0; display: grid; gap: 10px; align-content: start; }
 .cols p { margin: 0; }
-.q, .how { font: 400 15px/1.5 var(--f-display); }
+.q, .how { font: 400 15px/1.5 var(--f-reg); }
 .how li { margin-bottom: 6px; }
 .how ul { margin: 0; padding-left: 16px; }
+.how.sub { display: grid; gap: 10px; margin-top: 10px; padding-top: 16px; border-top: 1px solid var(--rule); }
 .row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; }
 #hero { width: 108px; height: 144px; image-rendering: pixelated; display: block; }
 .studio { display: grid; grid-template-columns: 196px 1fr; gap: 22px; border-top: 1px solid var(--ink); padding-top: 18px; }
+.opts { grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); column-gap: 26px; align-content: start; }
+.pass { display: grid; grid-template-columns: minmax(0, 1fr) 260px; background: var(--glass); border: 1px solid var(--ink); box-shadow: 6px 6px 0 rgba(31, 63, 240, 0.16); }
+.pmain { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 16px 18px 18px; min-width: 0; }
+.pstub { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-content: center; padding: 16px 18px; border-left: 1px dashed rgba(18,21,26,0.45); }
+.pstub::before, .pstub::after { content: ''; position: absolute; left: -8px; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 1px solid var(--ink); }
+.pstub::before { top: -8px; clip-path: inset(50% 0 0 0); }
+.pstub::after { bottom: -8px; clip-path: inset(0 0 50% 0); }
+.passtop { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 8px; }
+.pass, .pstub { min-width: 0; }
+.pass .namerow { display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap; }
+.pass #pname { flex: 1 1 220px; min-width: 0; width: auto; box-sizing: border-box; font-size: 24px; padding: 10px 12px; }
+.admit { display: flex; justify-content: space-between; gap: 8px; font: 500 10.5px/1.2 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+.pass #enter { width: 100%; }
+@media (max-width: 720px) { .pass { grid-template-columns: minmax(0, 1fr); } .pass #pname { font-size: 20px; flex-basis: 160px; } .pstub { border-left: 0; border-top: 1px dashed rgba(18,21,26,0.45); } .pstub::before { top: -8px; left: -8px; clip-path: inset(0 0 0 50%); } .pstub::after { top: -8px; bottom: auto; left: auto; right: -8px; clip-path: inset(0 50% 0 0); } }
 .avstage { display: grid; gap: 10px; justify-items: center; align-content: start; background: var(--glass); border: 1px solid var(--rule); padding: 14px 10px 12px; }
 .avstage .lab { justify-self: stretch; text-align: center; }
 .avfloor { width: 120px; height: 10px; margin-top: -14px; background: radial-gradient(ellipse at center, rgba(18,21,26,0.28), rgba(18,21,26,0) 70%); }
@@ -144,7 +232,7 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
 .sw[aria-pressed="true"] { outline: 2px solid var(--ink); outline-offset: 2px; }
 .chip:focus-visible, .sw:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
 @media (max-width: 620px) { .studio { grid-template-columns: 1fr; } .opt { grid-template-columns: 1fr; gap: 6px; } .opt > .lab { padding-top: 0; } }
-#enter { font: 700 14px/1 var(--f-display); letter-spacing: 0.02em; background: var(--ink); color: #f3f4f1; border: 0; padding: 16px 26px; cursor: pointer; border-radius: 0; }
+#enter { font: 600 14px/1 var(--f-reg); letter-spacing: 0.04em; background: var(--ink); color: #f3f4f1; border: 0; padding: 16px 26px; cursor: pointer; border-radius: 0; }
 #enter:disabled { opacity: 0.5; cursor: progress; }
 #err { color: #b3261e; font: 500 13px var(--f-mono); }
 
@@ -161,8 +249,44 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
   #cap span { font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
+/* ---------- opening animation: the twelve words arrive on acrylic sheets and settle into the sentence ---------- */
+#splash { position: fixed; inset: 0; z-index: 60; background: var(--paper); display: grid; place-items: center; align-content: center; gap: clamp(22px, 4vh, 40px); overflow: hidden; cursor: pointer;
+  background-image: linear-gradient(rgba(18,21,26,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(18,21,26,0.05) 1px, transparent 1px); background-size: 48px 48px; }
+#splash.out { transition: transform 0.85s cubic-bezier(.7,0,.2,1), opacity 0.85s; transform: translateY(-104%); }
+#splash.gone { display: none; }
+.sp-line { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0.18em 0.26em; width: min(1000px, 92vw); font-size: clamp(30px, 6vw, 78px); line-height: 1.12; isolation: isolate; }
+.sp-w { position: relative; display: inline-block; padding: 0.04em 0.14em 0.1em; opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--r)) scale(1.35); filter: blur(6px); }
+.sp-w::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--tint); mix-blend-mode: multiply; border: 1px solid rgba(255,255,255,0.7); transition: opacity 0.6s; }
+.sp-w.s1 { font-size: 1.14em; } .sp-w.s2 { font-size: 0.72em; }
+#splash.run .sp-w { animation: spIn 1.1s cubic-bezier(.2,.75,.15,1) forwards; animation-delay: calc(var(--i) * 120ms + 200ms); }
+#splash.settled .sp-w::before { opacity: 0; }
+@keyframes spIn { 60% { filter: blur(0); } to { opacity: 1; transform: none; filter: blur(0); } }
+.sp-meta { position: absolute; left: max(18px, env(safe-area-inset-left, 0px)); right: max(18px, env(safe-area-inset-right, 0px)); bottom: max(22px, env(safe-area-inset-bottom, 0px)); display: flex; justify-content: space-between; gap: 12px; font: 500 11px/1.2 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+.sp-top { top: max(22px, env(safe-area-inset-top, 0px)); bottom: auto; }
+.sp-bar { position: absolute; left: 0; bottom: 0; height: 4px; width: 100%; background: var(--cobalt); transform-origin: left; transform: scaleX(0); }
+#splash.run .sp-bar { transition: transform 4.6s cubic-bezier(.3,.1,.3,1); transform: scaleX(1); }
+.sp-tag { padding: 0 18px; font: 500 11px/1.2 var(--f-mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); opacity: 0; transition: opacity 0.6s; text-align: center; width: 100%; }
+#splash.settled .sp-tag { opacity: 1; }
+.sp-walker { position: absolute; left: 0; bottom: clamp(64px, 13vh, 130px); width: 84px; height: 112px; image-rendering: pixelated; opacity: 0; }
+.sp-walker.on { opacity: 1; }
+.sp-st { position: absolute; left: var(--x); top: var(--y); padding: 5px 5px 4px; background: #fff; box-shadow: 0 8px 22px rgba(18,21,26,0.16), 0 0 0 1px rgba(18,21,26,0.08); opacity: 0; transform: translate(-50%, -50%) rotate(var(--r)) scale(0.2); transition: transform 0.5s cubic-bezier(.3,1.7,.5,1), opacity 0.2s; }
+.sp-st.on { opacity: 1; transform: translate(-50%, -50%) rotate(var(--r)) scale(1); }
+.sp-st canvas { display: block; width: 72px; height: 56px; image-rendering: pixelated; }
+.sp-st span { display: block; margin-top: 3px; font: 500 9px/1 var(--f-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); text-align: center; }
+@media (max-width: 620px) { .sp-st canvas { width: 54px; height: 42px; } .sp-walker { width: 54px; height: 72px; } }
+@media (prefers-reduced-motion: reduce) { .sp-st { transition: opacity 0.3s; transform: translate(-50%, -50%) rotate(var(--r)); } }
+@media (prefers-reduced-motion: reduce) { .sp-w { opacity: 1; transform: none; filter: none; } #splash.run .sp-w { animation: none; } #splash.out { transition: opacity 0.4s; transform: none; opacity: 0; } #splash.run .sp-bar { transition: none; } }
+
 </style>
 
+<div id="splash" role="presentation" aria-hidden="true">
+  <div class="sp-meta sp-top"><span>Open Text Room</span><span id="sp-count">00 / 12</span></div>
+  <div class="sp-line" id="sp-line"></div>
+  <div class="sp-tag">Eight rooms &middot; twelve words &middot; one sentence, many readings</div>
+  <div class="sp-meta"><span>Language &middot; space &middot; viewer</span><span>Click to skip</span></div>
+  <canvas class="sp-walker" id="sp-walker" width="18" height="24"></canvas>
+  <div class="sp-bar"></div>
+</div>
 <div id="stage"><canvas id="gl" tabindex="0" aria-label="A gallery of eight rooms with words printed on hanging acrylic sheets and two walls of loose words"></canvas></div>
 
 <div id="brand" class="hud"><b>Open Text Room</b><span class="lab">Eight rooms, twelve words</span><span id="who"></span><button class="mini txt" id="hintbtn" aria-expanded="true" aria-controls="hint">Hide guide</button>
@@ -185,6 +309,7 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
   <div class="mtop"><span class="lab" id="mlab">Mission 1 of 8</span><span class="lab" id="mscore">0 pts</span><button id="mmin" class="mini" aria-label="Collapse mission panel" aria-expanded="true">&minus;</button></div>
   <p id="mtext"></p>
   <div class="mtop mrow2"><div id="mticks" class="meter m8" aria-hidden="true"></div><button class="mini txt" id="mskip">Skip</button></div>
+  <p id="mreward"></p>
 </div>
 <div id="cap" class="hud"><div class="caphead"><b id="capn"></b><button id="capmin" class="mini" aria-label="Collapse room note" aria-expanded="true" aria-controls="capt">&minus;</button></div><span id="capt"></span></div>
 <canvas id="map" class="hud" width="416" height="216" aria-label="Map of the eight rooms. Click a room to jump there." title="Click a room to jump there"></canvas>
@@ -197,35 +322,52 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
     <div class="sec"><span class="lab" id="pzalab">Sentence shelf</span><ol id="pzlist" class="pzlist"></ol></div>
   </div>
 </aside>
-<div id="pad" aria-label="Walk control"><div id="knob"></div></div>
+<div id="pad" aria-label="Walk control"><span class="pa n"></span><span class="pa s"></span><span class="pa w"></span><span class="pa e"></span><div id="knob"></div></div>
 <div id="toast" role="status"></div>
+<div id="reward" role="dialog" aria-live="polite" aria-label="Reward unlocked">
+  <canvas id="rw-av" width="18" height="24"></canvas>
+  <div class="rw-t"><span class="lab" id="rw-lab">Mission 1 complete &middot; unlocked</span><span class="rw-name" id="rw-name"></span><span class="rw-pts" id="rw-pts"></span></div>
+  <div class="rw-btns"><button class="btn" id="rw-later">Later</button><button class="btn primary" id="rw-wear">Wear it</button></div>
+</div>
 
 <section id="intro" aria-label="Introduction">
   <div class="card">
     <span class="lab">Experimental interactive &middot; language, space, viewer</span>
     <h1 id="sentence" aria-label="Typography is an interpretive medium; the text is open rather than closed"></h1>
+    <div class="pass" id="pass">
+      <div class="pmain">
+        <div class="passtop"><label class="lab" for="pname">Gallery pass &middot; your name</label><span class="lab" id="passno">No. 0000</span></div>
+        <div class="namerow"><input id="pname" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Pick a name"><button class="chip" id="pdice" type="button">Random name</button></div>
+        <span class="small">Everyone else in the gallery sees you by this name. Dress your walker below, then step in.</span>
+      </div>
+      <div class="pstub">
+        <div class="admit" aria-hidden="true"><span>Admit one</span><span>8 rooms &middot; 7 sentences</span></div>
+        <button id="enter" disabled>Setting type&hellip;</button>
+      </div>
+    </div>
     <div class="cols">
       <div>
         <span class="lab">Design prompts</span>
         <p class="q">How could changing the spatial relationships between words affect the way people read and interpret a sentence?</p>
         <p class="q">How could the same words create different meanings through changes in visual arrangement?</p>
+        <div class="how sub">
+          <span class="lab">Play together</span>
+          <ul>
+            <li>Two more rooms hold word walls: the words lie scattered and you put the sentence together yourself, then put it on a sentence shelf everyone can read.</li>
+            <li>Other people who open the link walk the gallery with you, under the names they pick.</li>
+            <li>Dress your walker below before you go in. The Avatar button brings you back here at any time.</li>
+          </ul>
+        </div>
       </div>
       <div class="how">
         <span class="lab">In the gallery</span>
         <ul>
           <li>Every word is printed on a tinted acrylic sheet hung in the air. Sheets sit in front of and behind each other, so their colours and words overlap.</li>
           <li>Walk through six rooms. The same sentence is hung differently in each. A few steps sideways and the layers slide into another reading.</li>
-          <li>Two more rooms hold word walls: the words lie scattered and you put the sentence together yourself, then put it on a sentence shelf everyone can read.</li>
-          <li>Other people who open the link walk the gallery with you, under the names they pick.</li>
           <li>The reading panel shows what the sentence says from where you stand. Eight missions ask you to find particular readings.</li>
-          <li>Dress your walker below before you go in. The Avatar button brings you back here at any time.</li>
+          <li>Click a room on the map in the corner to jump straight there.</li>
         </ul>
       </div>
-    </div>
-    <div class="namebox">
-      <label class="lab" for="pname">Your name</label>
-      <div class="namerow"><input id="pname" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Pick a name"><button class="chip" id="pdice" type="button">Random name</button></div>
-      <span class="small">Everyone else in the gallery sees you by this name.</span>
     </div>
     <div class="studio" id="studio" aria-label="Design your avatar">
       <div class="avstage">
@@ -237,7 +379,6 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
       <div class="opts" id="avOpts"></div>
     </div>
     <div class="row">
-      <button id="enter" disabled>Setting type&hellip;</button>
       <span class="lab">Lawrence Weiner &middot; Ellen Lupton &middot; J. Abbott Miller &middot; Michael Rock</span>
     </div>
     <span id="err"></span>
@@ -264,7 +405,8 @@ var FB_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/', backendP = null, fbP
 function whichBackend() {                                           // claude.ai hands the page its runtime a moment after load, so wait briefly before deciding
   if (!backendP) backendP = new Promise(function (res) {
     var t0 = Date.now();
-    (function poll() { if (onClaude()) return res('claude'); if (Date.now() - t0 > 2500) return res(FIREBASE_CONFIG ? 'fb' : 'none'); setTimeout(poll, 100); })();
+    var h = location.hostname, offClaude = location.protocol === 'file:' || /(^|\.)github\.io$/.test(h) || h === 'localhost' || h === '127.0.0.1' || !/claude/.test(h);
+    (function poll() { if (onClaude()) return res('claude'); if (Date.now() - t0 > (offClaude ? 2500 : 15000)) return res(offClaude && FIREBASE_CONFIG ? 'fb' : 'none'); setTimeout(poll, 100); })();
   });
   return backendP;
 }
@@ -289,9 +431,93 @@ function esc(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;
 /* ---------- the sentence ---------- */
 var SENT = ['Typography', 'is', 'an', 'interpretive', 'medium;', 'the', 'text', 'is', 'open', 'rather', 'than', 'closed'];
 var VOICE_OF = [0, 2, 2, 1, 0, 2, 0, 2, 1, 1, 2, 0];
+// one sentence per room, taken from the two source essays; w = words, v = voice of each word, by = the author plate
+var ROOM_TEXT = {
+  'Orbit': { by: 'Ellen Lupton & J. Abbott Miller', w: ['Spacing', 'and', 'punctuation,', 'borders', 'and', 'frames:', 'these', 'are', 'the', 'territory', 'of', 'graphic', 'design.'], v: [0, 2, 1, 0, 2, 1, 2, 2, 2, 0, 2, 1, 0] },
+  'Stairs': { by: 'Michael Rock', w: ['What', 'is', 'design', 'theory', 'if', 'not', 'a', 'series', 'of', 'critical', 'elevations', 'and', 'demotions?'], v: [0, 2, 1, 0, 2, 2, 2, 1, 2, 0, 1, 2, 0] },
+  'Sweet Spot': { by: 'Ellen Lupton & J. Abbott Miller', w: ['Thoughts', 'take', 'shape', 'out', 'of', 'the', 'material', 'body', 'of', 'language.'], v: [0, 2, 1, 2, 2, 2, 1, 0, 2, 0] },
+  'Fog': { by: 'Ferdinand de Saussure', w: ['Writing', 'obscures', 'language;', 'it', 'is', 'not', 'a', 'guise', 'for', 'language', 'but', 'a', 'disguise.'], v: [0, 1, 0, 2, 2, 2, 2, 1, 2, 0, 2, 2, 1] },
+  'Word Wall': { by: 'Michael Rock', w: ['Not', 'who', 'made', 'it,', 'but', 'rather', 'what', 'it', 'does', 'and', 'how', 'it', 'does', 'it.'], v: [0, 1, 2, 2, 2, 1, 0, 2, 1, 2, 0, 2, 1, 2] }
+};
+function wordsOf(T) { return T.w.map(function (t, i) { return { idx: i, t: t, voice: T.v[i] }; }); }
+
+/* ---------- opening animation ---------- */
 (function () {
-  var h = $('#sentence');
-  SENT.forEach(function (t, i) { var s = document.createElement('span'); s.className = 's' + VOICE_OF[i] + (i === 8 ? ' cobalt' : ''); s.textContent = t; h.appendChild(s); h.appendChild(document.createTextNode(' ')); });
+  var sp = $('#splash'), line = $('#sp-line'), cnt = $('#sp-count'), done = false, timers = [];
+  var tints = ['rgba(47,86,255,0.2)', 'rgba(255,176,46,0.3)', 'rgba(255,63,164,0.2)', 'rgba(39,224,164,0.28)', 'rgba(154,107,255,0.22)'];
+  var r = mulberry(7);
+  SENT.forEach(function (t, i) {
+    var w = document.createElement('span'); w.className = 'sp-w s' + VOICE_OF[i]; w.textContent = t; if (i === 8) w.style.color = '#f0287f';
+    var a = r() * 6.283, d = 38 + r() * 30;
+    w.style.setProperty('--dx', (Math.cos(a) * d).toFixed(1) + 'vw'); w.style.setProperty('--dy', (Math.sin(a) * d * 0.7).toFixed(1) + 'vh');
+    w.style.setProperty('--r', ((r() - 0.5) * 40).toFixed(1) + 'deg'); w.style.setProperty('--i', i); w.style.setProperty('--tint', tints[i % 5]);
+    line.appendChild(w);
+  });
+  function finish() {
+    if (done) return; done = true; timers.forEach(clearTimeout);
+    sp.classList.add('run', 'settled', 'out'); cnt.textContent = '12 / 12';
+    setTimeout(function () { sp.classList.add('gone'); }, 900);
+  }
+  // your walker strolls in, then a sheet of expression stickers made from its own face pops up around the sentence
+  var EXPR = [['smile', 'Hello'], ['wink', 'Wink'], ['wow', 'Wow'], ['love', 'Love it'], ['happy', 'Yay']];
+  var SPOTS = [[11, 20, -8], [88, 18, 7], [9, 74, 6], [90, 70, -6], [50, 11, -3]];
+  function face(expr) {
+    var c = document.createElement('canvas'); c.width = 18; c.height = 14; var g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(sheetCanvas, 0, 0, 18, 14, 0, 0, 18, 14);
+    var sk = AV.skin, dk = '#12151a';
+    function px(x, y, w, h, col) { g.fillStyle = col; g.fillRect(x, y, w, h); }
+    if (expr === 'wink') { px(11, 8, 1, 2, sk); px(10, 9, 3, 1, dk); }
+    else if (expr === 'wow') { px(8, 10, 2, 1, sk); px(8, 10, 2, 2, dk); px(6, 7, 1, 1, dk); px(11, 7, 1, 1, dk); }
+    else if (expr === 'love') { px(5, 8, 3, 2, '#ff3fa4'); px(10, 8, 3, 2, '#ff3fa4'); px(6, 10, 1, 1, '#ff3fa4'); px(11, 10, 1, 1, '#ff3fa4'); }
+    else if (expr === 'happy') { px(6, 8, 1, 2, sk); px(11, 8, 1, 2, sk); px(5, 9, 1, 1, dk); px(6, 8, 1, 1, dk); px(7, 9, 1, 1, dk); px(10, 9, 1, 1, dk); px(11, 8, 1, 1, dk); px(12, 9, 1, 1, dk); px(7, 10, 4, 1, dk); px(8, 11, 2, 1, '#e8908a'); }
+    return c;
+  }
+  function stickers() {
+    EXPR.forEach(function (e, k) {
+      var st = document.createElement('div'); st.className = 'sp-st'; st.style.setProperty('--x', SPOTS[k][0] + '%'); st.style.setProperty('--y', SPOTS[k][1] + '%'); st.style.setProperty('--r', SPOTS[k][2] + 'deg');
+      st.appendChild(face(e[0])); var lb = document.createElement('span'); lb.textContent = e[1]; st.appendChild(lb); sp.appendChild(st);
+      timers.push(setTimeout(function () { st.classList.add('on'); try { blip && blip(500 + k * 110, 0.08, 0.02); } catch (x) {} }, k * 180));
+    });
+  }
+  function walker() {
+    var cv = $('#sp-walker'), g = cv.getContext('2d'), t0 = performance.now(), dur = 2200, sw = cv.offsetWidth || 54;
+    g.imageSmoothingEnabled = false; cv.classList.add('on');
+    (function step(now) {
+      if (done) return;
+      var t = Math.min(1, (now - t0) / dur), x = -sw + t * (window.innerWidth * 0.16 + sw), seq = [1, 0, 3, 2];
+      g.clearRect(0, 0, 18, 24);
+      if (t < 1) g.drawImage(sheetCanvas, seq[Math.floor((now - t0) / 120) % 4] * 18, 48, 18, 24, 0, 0, 18, 24);
+      else g.drawImage(sheetCanvas, (Math.floor((now - t0) / 450) % 2 ? 2 : 0) * 18, 0, 18, 24, 0, 0, 18, 24);
+      cv.style.transform = 'translateX(' + x.toFixed(1) + 'px)';
+      requestAnimationFrame(step);
+    })(t0);
+  }
+  function play() {
+    if (done) return; sp.classList.add('run');
+    for (var i = 1; i <= 12; i++) (function (k) { timers.push(setTimeout(function () { cnt.textContent = (k < 10 ? '0' : '') + k + ' / 12'; }, 200 + k * 120 + 600)); })(i);
+    timers.push(setTimeout(walker, 900));
+    timers.push(setTimeout(function () { sp.classList.add('settled'); }, 2900));
+    timers.push(setTimeout(stickers, 3100));
+    timers.push(setTimeout(finish, 5600));
+  }
+  sp.addEventListener('click', finish);
+  window.addEventListener('keydown', function (e) { if (!done && (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); finish(); } }, true);
+  var started = false; function go() { if (!started) { started = true; requestAnimationFrame(play); } }
+  try { document.fonts.ready.then(go); } catch (e) { go(); }
+  setTimeout(go, 900);
+})();
+(function () {
+  var h = $('#sentence'), d = 0;
+  function w(i, cls, dx) { var s = document.createElement('span'); s.className = 'hw s' + VOICE_OF[i] + (cls ? ' ' + cls : ''); s.textContent = SENT[i]; s.style.setProperty('--d', d++); s.style.setProperty('--dx', dx || 0); return s; }
+  function line(cls, kids) { var l = document.createElement('span'); l.className = 'hl ' + cls; l.setAttribute('aria-hidden', 'true'); kids.forEach(function (k) { l.appendChild(k); }); h.appendChild(l); }
+  function stack(a, b) { var st = document.createElement('span'); st.className = 'stack'; st.style.setProperty('--d', d++); [a, b].forEach(function (i) { var s = document.createElement('span'); s.className = 's' + VOICE_OF[i]; s.textContent = SENT[i]; st.appendChild(s); }); return st; }
+  var deco = document.createElement('span'); deco.className = 'hdeco'; deco.setAttribute('aria-hidden', 'true');
+  deco.innerHTML = '<span class="acr a1"></span><span class="acr a2"></span><span class="acr a3"></span>';
+  h.appendChild(deco);
+  line('l1', [w(0, 'big', -30), stack(1, 2)]);
+  line('l2', [w(3, 'mid sheet t-pink', 40), w(4, '', 20)]);
+  line('l3', [w(5, 'tiny', -20), w(6, 'sheet t-blue', 0), w(7, 'tiny', 20)]);
+  line('l4', [w(8, 'huge cobalt', 60), w(9, '', 30), w(10, 'tiny', 10), w(11, 'boxed', 0)]);
 })();
 
 /* ---------- the pixel character, drawn in code from the avatar settings ---------- */
@@ -299,14 +525,29 @@ var CW = 18, CHH = 24;
 var AV_DEFAULT = { body: 'girl', hairStyle: 'twin', hair: '#8a5a3a', skin: '#f2c9a5', topStyle: 'coat', top: '#ff7ab8', bottomStyle: 'pants', bottom: '#2a2f3a', shoes: '#ffffff', acc: ['scarf', 'backpack'] };
 var AV_SCHEMA = [
   { k: 'body', lab: 'Body', ch: [['girl', 'Girl'], ['boy', 'Boy']] },
-  { k: 'hairStyle', lab: 'Hair', ch: [['twin', 'Twin tails'], ['short', 'Short'], ['long', 'Long'], ['bun', 'Buns'], ['spiky', 'Spiky']], col: 'hair', sw: ['#8a5a3a', '#2a1d17', '#d9a54a', '#c4502c', '#e7e2d8', '#2f56ff', '#ff7ab8'] },
+  { k: 'hairStyle', lab: 'Hair', ch: [['twin', 'Twin tails'], ['short', 'Short'], ['long', 'Long'], ['bun', 'Buns'], ['spiky', 'Spiky']], col: 'hair', sw: ['#8a5a3a', '#2a1d17', '#d9a54a', '#c4502c', '#e7e2d8', '#2f56ff', '#ff7ab8', '#e3b23c', '#7fe3c4'] },
   { k: 'skin', lab: 'Skin', sw: ['#fde0c8', '#f2c9a5', '#d9a27a', '#a86f4c', '#6e4630'] },
-  { k: 'topStyle', lab: 'Top', ch: [['coat', 'Coat'], ['hoodie', 'Hoodie'], ['tee', 'T-shirt']], col: 'top', sw: ['#ff7ab8', '#2f56ff', '#27e0a4', '#ffb02e', '#f4f1e8', '#2a2f3a', '#9a6bff'] },
+  { k: 'topStyle', lab: 'Top', ch: [['coat', 'Coat'], ['hoodie', 'Hoodie'], ['tee', 'T-shirt']], col: 'top', sw: ['#ff7ab8', '#2f56ff', '#27e0a4', '#ffb02e', '#f4f1e8', '#2a2f3a', '#9a6bff', '#d4a017'] },
   { k: 'bottomStyle', lab: 'Bottom', ch: [['pants', 'Trousers'], ['skirt', 'Skirt'], ['shorts', 'Shorts']], col: 'bottom', sw: ['#2a2f3a', '#4a6fa5', '#c9b58f', '#ff7ab8', '#12151a', '#9a6bff'] },
   { k: 'shoes', lab: 'Shoes', sw: ['#ffffff', '#12151a', '#c4502c', '#ffb02e', '#2f56ff'] },
-  { k: 'acc', lab: 'Extras', multi: [['scarf', 'Scarf'], ['backpack', 'Backpack'], ['glasses', 'Glasses'], ['cap', 'Cap'], ['bow', 'Bow']] }
+  { k: 'acc', lab: 'Extras', multi: [['scarf', 'Scarf'], ['backpack', 'Backpack'], ['glasses', 'Glasses'], ['cap', 'Cap'], ['bow', 'Bow'], ['star', 'Star pin'], ['phones', 'Headphones'], ['flower', 'Flower'], ['crown', 'Crown'], ['halo', 'Halo']] }
 ];
 var AV_KEY = 'open-text-room.avatar';
+/* rewards: every mission found unlocks one thing for your walker */
+var REWARDS = [
+  { id: 'star', k: 'acc', v: 'star', name: 'Star pin' },
+  { id: 'gold', k: 'hair', v: '#e3b23c', name: 'Gold hair' },
+  { id: 'phones', k: 'acc', v: 'phones', name: 'Headphones' },
+  { id: 'flower', k: 'acc', v: 'flower', name: 'Flower' },
+  { id: 'mint', k: 'hair', v: '#7fe3c4', name: 'Mint hair' },
+  { id: 'crown', k: 'acc', v: 'crown', name: 'Crown' },
+  { id: 'goldtop', k: 'top', v: '#d4a017', name: 'Gold top' },
+  { id: 'halo', k: 'acc', v: 'halo', name: 'Halo' }
+];
+var RW_KEY = 'open-text-room.rewards';
+var unlocked = (function () { try { var a = JSON.parse(localStorage.getItem(RW_KEY) || '[]'); return Array.isArray(a) ? a.filter(function (x) { return REWARDS.some(function (r) { return r.id === x; }); }) : []; } catch (e) { return []; } })();
+function saveUnlocked() { try { localStorage.setItem(RW_KEY, JSON.stringify(unlocked)); } catch (e) {} }
+function lockOf(k, v) { for (var i = 0; i < REWARDS.length; i++) { var r = REWARDS[i]; if (r.k === k && r.v === v) return unlocked.indexOf(r.id) >= 0 ? null : { m: i + 1, r: r }; } return null; }
 function avCopy(a) { var o = {}; for (var k in a) o[k] = Array.isArray(a[k]) ? a[k].slice() : a[k]; return o; }
 function avValid(a) {                                               // keep only values the designer can produce
   var o = avCopy(AV_DEFAULT); if (!a || typeof a !== 'object') return o;
@@ -349,6 +590,11 @@ function drawChar(g, ox, oy, view, fr, A) {
     P(5 + sw * 2, 11 + b, 2, tee ? 1 : 3, topD); if (tee) P(5 + sw * 2, 12 + b, 2, 2, skin); P(5 + sw * 2, 14 + b, 2, 1, skin);
     if (capOn) { P(3, -1 + b, 7, 1, capC); P(2, 0 + b, 9, 3, capC); P(9, 2 + b, 4, 1, capD); }
     if (has('bow')) { P(3, -1 + b, 2, 2, bowC); P(6, -1 + b, 2, 2, bowC); P(5, 0 + b, 1, 1, bowD); }
+    if (has('phones')) { P(6, 0 + b, 1, 4, '#3a404a'); P(5, 4 + b, 3, 3, '#1f3ff0'); P(5, 4 + b, 1, 1, '#7d93ff'); }
+    if (has('star')) { P(5, 0 + b, 1, 3, '#ffd23a'); P(4, 1 + b, 3, 1, '#ffd23a'); }
+    if (has('flower')) { P(9, 1 + b, 3, 1, '#ff7ab8'); P(10, 0 + b, 1, 3, '#ff7ab8'); P(10, 1 + b, 1, 1, '#ffd23a'); }
+    if (has('crown')) { P(3, 0 + b, 7, 1, '#f2c230'); P(3, -1 + b, 1, 1, '#f2c230'); P(6, -1 + b, 1, 1, '#f2c230'); P(9, -1 + b, 1, 1, '#f2c230'); P(6, 0 + b, 1, 1, '#ff3fa4'); }
+    if (has('halo')) { P(3, -1 + b, 7, 1, '#ffe27a'); }
   } else {
     var back = view === 1;
     [[4, 3, stepL], [8, 8, stepR]].forEach(function (q) { var lf = q[2] ? 1 : 0; P(q[0], 15 + b, 2, 3 - b - lf, pants ? bot : skin); if (shorts) P(q[0], 15 + b, 2, 1, bot); P(q[1], 18 - lf, 3, 1, shoe); P(q[1], 19 - lf, 3, 1, sole); });
@@ -386,6 +632,11 @@ function drawChar(g, ox, oy, view, fr, A) {
     }
     if (capOn) { P(3, -1 + b, 8, 1, capC); P(2, 0 + b, 10, 3, capC); P(5, 0 + b, 4, 1, shade(capC, 0.35)); if (!back) P(1, 3 + b, 12, 1, capD); }
     if (has('bow')) { P(9, -1 + b, 2, 2, bowC); P(12, -1 + b, 2, 2, bowC); P(11, 0 + b, 1, 1, bowD); }
+    if (has('phones')) { P(3, 0 + b, 8, 1, '#3a404a'); P(2, 1 + b, 1, 3, '#3a404a'); P(11, 1 + b, 1, 3, '#3a404a'); P(1, 4 + b, 2, 3, '#1f3ff0'); P(11, 4 + b, 2, 3, '#1f3ff0'); P(1, 4 + b, 1, 1, '#7d93ff'); P(12, 4 + b, 1, 1, '#7d93ff'); }
+    if (has('star')) { P(4, 0 + b, 1, 3, '#ffd23a'); P(3, 1 + b, 3, 1, '#ffd23a'); }
+    if (has('flower')) { P(9, 1 + b, 3, 1, '#ff7ab8'); P(10, 0 + b, 1, 3, '#ff7ab8'); P(10, 1 + b, 1, 1, '#ffd23a'); }
+    if (has('crown')) { P(3, 0 + b, 8, 1, '#f2c230'); P(3, -1 + b, 1, 1, '#f2c230'); P(6, -1 + b, 2, 1, '#f2c230'); P(10, -1 + b, 1, 1, '#f2c230'); P(6, 0 + b, 2, 1, '#ff3fa4'); }
+    if (has('halo')) { P(3, -1 + b, 8, 1, '#ffe27a'); }
   }
 }
 function buildSheet(c, A) {
@@ -419,15 +670,19 @@ AV_SCHEMA.forEach(function (r) {
   }
   avOpts.appendChild(row);
 });
+var avHint = document.createElement('p'); avHint.className = 'small avhint'; avHint.textContent = 'Striped items unlock as you complete missions in the gallery.'; avOpts.parentNode.insertBefore(avHint, avOpts.nextSibling);
 function avSync() {
   Array.prototype.forEach.call(avOpts.querySelectorAll('button'), function (bt) {
-    var k = bt.dataset.k, v = bt.dataset.v, on = bt.dataset.multi ? AV.acc.indexOf(v) >= 0 : AV[k] === v;
+    var k = bt.dataset.k, v = bt.dataset.v, on = bt.dataset.multi ? AV.acc.indexOf(v) >= 0 : AV[k] === v, lk = lockOf(k, v);
     bt.setAttribute('aria-pressed', String(on));
+    bt.classList.toggle('locked', !!lk); if (lk) { bt.dataset.m = 'M' + lk.m; bt.title = 'Unlocks with mission ' + lk.m; } else { delete bt.dataset.m; bt.removeAttribute('title'); }
   });
 }
 avOpts.addEventListener('click', function (e) {
   var bt = e.target.closest('button'); if (!bt) return;
-  var k = bt.dataset.k, v = bt.dataset.v;
+  var k = bt.dataset.k, v = bt.dataset.v, lk = lockOf(k, v);
+  if (lk) { avHint.textContent = lk.r.name + ' is locked. Complete mission ' + lk.m + ' in the gallery to wear it.'; avHint.classList.add('warn'); return; }
+  avHint.classList.remove('warn');
   if (bt.dataset.multi) { var i = AV.acc.indexOf(v); if (i >= 0) AV.acc.splice(i, 1); else AV.acc.push(v); }
   else {
     if (k === 'body' && AV.body !== v) {                             // switching body gives a matching starting look; everything stays editable
@@ -441,12 +696,13 @@ avOpts.addEventListener('click', function (e) {
 function pick(list) { return list[Math.floor(Math.random() * list.length)]; }
 $('#avRand').addEventListener('click', function () {
   AV_SCHEMA.forEach(function (r) {
+    function open(k) { return function (v) { return !lockOf(k, v); }; }
     if (r.ch) AV[r.k] = pick(r.ch)[0];
-    if (r.col) AV[r.col] = pick(r.sw);
-    if (!r.ch && r.sw) AV[r.k] = pick(r.sw);
-    if (r.multi) AV.acc = r.multi.map(function (m) { return m[0]; }).filter(function () { return Math.random() < 0.4; });
+    if (r.col) AV[r.col] = pick(r.sw.filter(open(r.col)));
+    if (!r.ch && r.sw) AV[r.k] = pick(r.sw.filter(open(r.k)));
+    if (r.multi) AV.acc = r.multi.map(function (m) { return m[0]; }).filter(function (v) { return !lockOf('acc', v) && Math.random() < 0.35; });
   });
-  if (AV.acc.indexOf('cap') >= 0 && AV.acc.indexOf('bow') >= 0) AV.acc.splice(AV.acc.indexOf('bow'), 1);
+  ['bow', 'crown', 'halo'].forEach(function (x) { if (AV.acc.indexOf('cap') >= 0 && AV.acc.indexOf(x) >= 0) AV.acc.splice(AV.acc.indexOf(x), 1); });
   avRedraw();
 });
 $('#avReset').addEventListener('click', function () { AV = avCopy(AV_DEFAULT); avRedraw(); });
@@ -464,6 +720,7 @@ nameIn.addEventListener('input', function () { var n = cleanName(nameIn.value); 
 nameIn.addEventListener('blur', function () { var n = cleanName(nameIn.value) || randName(); nameIn.value = n; setName(n); });
 $('#pdice').addEventListener('click', function () { var n = randName(); nameIn.value = n; setName(n); });
 setName(myName);
+(function () { var n = 0; for (var i = 0; i < myName.length; i++) n = (n * 31 + myName.charCodeAt(i)) % 9973; $('#passno').textContent = 'No. ' + String(n).padStart(4, '0'); })();
 (function () {
   var hc = $('#hero'), g = hc.getContext('2d'), t = 0, hold = false; g.imageSmoothingEnabled = false;
   var seq = [1, 0, 3, 2], views = [0, 2, 1, 2], tb = $('#avTurn');
@@ -556,7 +813,7 @@ function wallConcreteTex() {
   }, [3, 1]);
 }
 var ROOM_DEFS = [
-  { name: 'Orbit', col: 0, row: 0, wall: '#1d2538', floor: 'dark', light: 0xb9ccff, ceil: '#1a2030', dark: true, note: 'Twelve sheets in a ring. From inside you read around. From outside you read through them.' },
+  { name: 'Orbit', col: 0, row: 0, wall: '#1d2538', floor: 'dark', light: 0xb9ccff, ceil: '#1a2030', dark: true, note: 'A ring of sheets. From inside you read around. From outside you read through them.' },
   { name: 'Sweet Spot', col: 1, row: 0, wall: '#b5bac1', floor: 'concrete', light: 0xffe4c4, ceil: '#2b2e33', note: 'A steel-and-concrete hall. Switch to eye view (V) and stand on the centre line, two steps inside the door. Every sheet is bolted to a scaffold tube: drag it along the tube, drag it across to another scaffold, scroll to raise or lower it. Grab the scaffold itself to move the whole thing.' },
   { name: 'Fog', col: 2, row: 0, wall: '#dcdbe8', floor: 'tile', light: 0xffe8f4, ceil: '#f1eff6', note: 'Four sheets, one line of text. Step left and right and the layers slide apart.' },
   { name: 'Stairs', col: 0, row: 1, wall: '#efe3dc', floor: 'terrazzo', light: 0xfff0e0, ceil: '#f6f1ed', note: 'A staircase of words, descending away from the door. Walk along it.' },
@@ -831,8 +1088,8 @@ function buildArchitecture() {
 
 /* ---------- acrylic sheets ---------- */
 var PPM = 300, mctx = document.createElement('canvas').getContext('2d');
-var FD = '"Libre Franklin", "Helvetica Neue", Arial, sans-serif', FS = 'Newsreader, Georgia, serif', FM = '"IBM Plex Mono", monospace';
-var VOICES = [{ fam: FD, wt: 900, k: 1, tr: -0.02 }, { fam: FS, wt: 300, it: 1, k: 1.15, tr: 0 }, { fam: FM, wt: 500, k: 0.74, tr: 0.08, up: 1 }];
+var FD = 'Futura, "Futura PT", Jost, "Century Gothic", sans-serif', FS = 'Newsreader, Georgia, serif', FM = '"DM Mono", monospace';
+var VOICES = [{ fam: FD, wt: 700, k: 1, tr: -0.01 }, { fam: FS, wt: 300, it: 1, k: 1.15, tr: 0 }, { fam: FM, wt: 500, k: 0.74, tr: 0.08, up: 1 }];
 var TINTS = [
   { c: '#2f56ff', a: 0.34, ink: '#0a1033', ui: '#1f3ff0' }, { c: '#ffb02e', a: 0.42, ink: '#5a1200', ui: '#b85400' },
   { c: '#ff3fa4', a: 0.34, ink: '#3a0624', ui: '#c2186f' }, { c: '#27e0a4', a: 0.38, ink: '#02382a', ui: '#0a8a63' },
@@ -976,17 +1233,27 @@ function makeTextSheet(o) {
   var tex = canvasTex(cw, ch, function (g) {
     drawAcrylic(g, cw, ch, o.tint);
     g.fillStyle = ink; g.textBaseline = 'alphabetic'; g.font = '500 ' + 0.075 * PPM + 'px ' + FM; g.fillText(o.title, 0.28 * PPM, 0.38 * PPM);
-    g.font = o.caps ? '900 ' + o.size * PPM + 'px ' + FD : 'italic 300 ' + o.size * PPM + 'px ' + FS;
+    g.font = o.caps ? '700 ' + o.size * PPM + 'px ' + FD : 'italic 300 ' + o.size * PPM + 'px ' + FS;
     wrapText(g, o.body, 0.28 * PPM, 0.38 * PPM + o.size * PPM * 1.55, cw - 0.56 * PPM, o.size * PPM * 1.28);
   });
   o.static = true; return finishSheet(o, o.W, o.H, 0, 0, tex, []);
 }
 
+function plaque(o) {                                             // a small credit plate: one line, no title
+  var cw = Math.ceil(o.W * PPM), ch = Math.ceil(o.H * PPM);
+  var tex = canvasTex(cw, ch, function (g) { drawAcrylic(g, cw, ch, o.tint); g.fillStyle = o.room.dark ? '#ffffff' : o.tint.ink; g.textBaseline = 'middle'; g.textAlign = 'center'; g.font = '500 ' + 0.075 * PPM + 'px ' + FD; g.fillText(o.text, cw / 2, ch / 2 + 2, cw - 0.16 * PPM); });
+  o.static = true; return finishSheet(o, o.W, o.H, 0, 0, tex, []);
+}
+function creditUnder(p, room, tint, text) {                       // author plate tucked under the far end of a sheet, in the sheet's own plane
+  var th = p.group.rotation.y, gp = p.group.position, lx = p.bx + p.W / 2 - 0.8, ly = p.by - p.H / 2 - 0.32;
+  return plaque({ room: room, anchor: V3(gp.x + Math.cos(th) * lx + Math.sin(th) * 0.01, gp.y + ly, gp.z - Math.sin(th) * lx + Math.cos(th) * 0.01), rotY: th, W: 1.6, H: 0.32, tint: tint, text: text });
+}
+
 /* ---------- installations ---------- */
 var V3 = function (x, y, z) { return new THREE.Vector3(x, y, z); };
-function refLine(idxs, fs, left, vv, gap) {                       // flush-left line, centres in metres
+function refLine(idxs, fs, left, vv, gap, T) {                    // flush-left line, centres in metres; T = a room's own sentence
   var u = left, out = [];
-  idxs.forEach(function (i) { var m = measureWord(SENT[i], VOICE_OF[i], fs); out.push({ idx: i, u: u + m.w / 2, v: vv, fs: fs }); u += m.w + gap; });
+  idxs.forEach(function (i) { var tx = T ? T.w[i] : SENT[i], vc = T ? T.v[i] : VOICE_OF[i], m = measureWord(tx, vc, fs), d = { idx: i, u: u + m.w / 2, v: vv, fs: fs }; if (T) { d.t = tx; d.voice = vc; } out.push(d); u += m.w + gap; });
   return out;
 }
 function lineW(items, fs, vv, gap, cu, maxW) {                   // items [index, text, voice]; centred on cu, shrunk to fit maxW
@@ -1000,7 +1267,7 @@ function lineW(items, fs, vv, gap, cu, maxW) {                   // items [index
   items.forEach(function (it, k) { out.push({ idx: it[0], t: it[1], voice: it[2], u: u + ws[k] / 2, v: vv, fs: fs }); u += ws[k] + gap; });
   return out;
 }
-function scaleRef(list, r) { return list.map(function (d) { return { idx: d.idx, u: d.u * r, v: d.v * r, fs: d.fs * r }; }); }
+function scaleRef(list, r) { return list.map(function (d) { return { idx: d.idx, t: d.t, voice: d.voice, u: d.u * r, v: d.v * r, fs: d.fs * r }; }); }
 function seq(a, b) { var o = []; for (var i = a; i <= b; i++) o.push(i); return o; }
 
 function addArrowScreens(S) {                                        // two real-looking display screens on the back wall; every 3 s they take turns playing
@@ -1110,27 +1377,34 @@ function buildInstallations() {
   // Layers (start room): three sheets in depth, aligned for the default follow camera
   var L = R('Layers'), P = V3(0, 1.62, 9.45), Dref = 4.6, fsR = 0.3;
   var ref = refLine(seq(0, 4), fsR, -3.2, 0.5, 0.2).concat(refLine(seq(5, 11), fsR, -3.2, -0.12, 0.2));
+  var lLast = null;
   [[0, 3.6, 0], [1, 4.6, 1], [2, 5.6, 2]].forEach(function (s) {
     var words = ref.filter(function (d) { return d.idx <= 4 ? s[0] === 0 : (d.idx <= 8 ? s[0] === 1 : s[0] === 2); });
-    makeSheet({ room: L, anchor: V3(P.x, P.y, P.z - s[1]), rotY: 0, tint: TINTS[s[2]], words: scaleRef(words, s[1] / Dref), pad: 0.45 });
+    var lp = makeSheet({ room: L, anchor: V3(P.x, P.y, P.z - s[1]), rotY: 0, tint: TINTS[s[2]], words: scaleRef(words, s[1] / Dref), pad: 0.45 }); if (s[0] === 2) lLast = lp;
   });
   makeTextSheet({ room: L, anchor: V3(-4.05, 2.15, L.cz - 3.0), rotY: Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[5], title: 'DESIGN PROMPT', size: 0.16, body: 'How could changing the spatial relationships between words affect the way people read and interpret a sentence?' });
   makeTextSheet({ room: L, anchor: V3(-4.05, 2.15, L.cz + 3.0), rotY: Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[3], title: 'DESIGN PROMPT', size: 0.16, body: 'How could the same words create different meanings through changes in visual arrangement?' });
-  makeTextSheet({ room: L, anchor: V3(4.05, 2.15, L.cz - 3.0), rotY: -Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[1], title: 'AFTER LAWRENCE WEINER, 1968', size: 0.17, caps: true, body: 'THE DECISION AS TO CONDITION RESTS WITH THE RECEIVER' });
+  makeTextSheet({ room: L, anchor: V3(4.05, 2.15, L.cz + 3.0), rotY: -Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[1], title: 'AFTER LAWRENCE WEINER, 1968', size: 0.17, caps: true, body: 'THE DECISION AS TO CONDITION RESTS WITH THE RECEIVER' });
+  if (lLast) {                                                       // the author plate sits under the far end of the last sheet: "rather than closed"
+    var lg = lLast.group.position;
+    plaque({ room: L, anchor: V3(lg.x + lLast.bx + lLast.W / 2 - 0.8, lg.y + lLast.by - lLast.H / 2 - 0.32, lg.z + 0.01), rotY: 0, W: 1.6, H: 0.32, tint: TINTS[2], text: 'Ellen Lupton & J. Abbott Miller' });
+  }
+  makeTextSheet({ room: L, anchor: V3(4.05, 2.15, L.cz + 3.0), rotY: -Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[2], title: 'ELLEN LUPTON · DECONSTRUCTION AND GRAPHIC DESIGN', size: 0.15, body: '“Typography is an interpretive medium; the text is open rather than closed.” The sentence hung in every room comes from her essay on deconstruction and graphic design.' });
 
   // Sweet Spot: one sheet per word, scaled along rays from one eye position
   var S = R('Sweet Spot'), SP = V3(0, 1.55, -1.8), Dr = 5, fsS = 0.3;
-  var refS = refLine(seq(0, 4), fsS, -3.3, 0.5, 0.2).concat(refLine(seq(5, 11), fsS, -3.3, -0.18, 0.2));
-  var TD = [2.8, 3.7, 4.6, 5.5, 6.4, 7.3], DI = [0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 3], depths = []; for (var di = 0; di < 12; di++) depths[di] = TD[DI[di]];
+  var TS = ROOM_TEXT['Sweet Spot'], nS = TS.w.length;                  // "Thoughts take shape / out of the material body of language."
+  var refS = refLine(seq(0, 2), fsS, -3.3, 0.5, 0.2, TS).concat(refLine(seq(3, nS - 1), fsS, -3.3, -0.18, 0.2, TS));
+  var TD = [2.8, 3.7, 4.6, 5.5, 6.4, 7.3], DI = [0, 1, 0, 0, 0, 0, 2, 0, 0, 3], depths = []; for (var di = 0; di < nS; di++) depths[di] = TD[DI[di] || 0];
   var maxExt = 0;
-  refS.forEach(function (d) { var r = depths[d.idx] / Dr, w = measureWord(SENT[d.idx], VOICE_OF[d.idx], d.fs).w; maxExt = Math.max(maxExt, (Math.abs(d.u) + w / 2) * r + 0.35); });
-  var kS = Math.min(1, 3.4 / maxExt);
-  refS = refS.map(function (d) { return { idx: d.idx, u: d.u * kS, v: d.v * kS, fs: d.fs * kS }; });
+  refS.forEach(function (d) { var r = depths[d.idx] / Dr, w = measureWord(d.t, d.voice, d.fs).w; maxExt = Math.max(maxExt, (Math.abs(d.u) + w / 2) * r + 0.35); });
+  var kS = Math.min(1, 3.4 / maxExt), sLast = null;
+  refS = refS.map(function (d) { return { idx: d.idx, t: d.t, voice: d.voice, u: d.u * kS, v: d.v * kS, fs: d.fs * kS }; });
   var TZ = TD.map(function (d) { return SP.z - d; }), byK = [[], [], [], [], [], []];
   refS.forEach(function (d) {
     var dd = depths[d.idx] + (d.idx % 3) * 0.05, r = dd / Dr, zz = SP.z - dd;      // a hair of separation keeps overlapping front sheets from sharing a plane
     var pn = makeSheet({ room: S, anchor: V3(SP.x, SP.y, zz), rotY: 0, tint: TINTS[d.idx % 6], words: scaleRef([d], r), pad: 0.22, track: { scaffold: true, F: null, z: zz } });
-    byK[DI[d.idx]].push(pn);
+    byK[DI[d.idx] || 0].push(pn); if (d.idx === nS - 1) sLast = pn;
   });
   var sets = [];
   byK.forEach(function (list, k) {
@@ -1148,22 +1422,25 @@ function buildInstallations() {
     F.sheets = st.list.slice(); st.list.forEach(function (pn) { pn.track.F = F; pn.rewire(); });
   });
   industrialHall(S, TZ); addArrowScreens(S);
+  if (sLast) creditUnder(sLast, S, TINTS[1], TS.by);
 
   // Stairs: a cascade that runs away from the east door
-  var St = R('Stairs');
-  for (var i = 0; i < 12; i++) makeSheet({ room: St, anchor: V3(St.cx + 3.6 - i * 0.5, 3.5 - i * 0.2, St.cz + 3.4 - i * 0.62), rotY: Math.PI / 2, tint: TINTS[i % 6], words: [{ idx: i, u: 0, v: 0, fs: 0.42 }], pad: 0.3 });
+  var St = R('Stairs'), TSt = ROOM_TEXT['Stairs'], stW = wordsOf(TSt), stK = 11 / (stW.length - 1), stLast = null;
+  stW.forEach(function (d, i) { var q = i * stK; d.u = 0; d.v = 0; d.fs = 0.42; stLast = makeSheet({ room: St, anchor: V3(St.cx + 3.6 - q * 0.5, 3.5 - q * 0.2, St.cz + 3.4 - q * 0.62), rotY: Math.PI / 2, tint: TINTS[i % 6], words: [d], pad: 0.3 }); });
+  if (stLast) creditUnder(stLast, St, TINTS[(stW.length - 1) % 6], TSt.by);
 
   // Corner: the sentence falls through a column of sheets, every letter its own voice
   var C = R('Corner');
   var CS = [[[0, 'Meaning', 0]], [[1, 'emerges', 1]], [[2, 'through', 2], [3, 'its', 2]], [[4, 'relationship', 0]], [[5, 'to', 2], [6, 'other', 1]], [[7, 'signs', 0]], [[8, 'within', 2], [9, 'a', 2]], [[10, 'larger', 1], [11, 'system.', 0]]];
   var cplain = [true, false, true, true, false, true, true, false];
   var czs = [-0.9, 0.8, -0.5, 0.9, -0.8, 0.5, -1.0, 0.7], ctint = [0, 1, 2, 3, 4, 5, 0, 1];
+  var cLast = null;
   CS.forEach(function (items, i) {
     var fs = 0.42, lay, tot;
     if (cplain[i]) {
       lay = lineW(items, fs, 0, 0.34, 0, 5.2);
       lay.forEach(function (d, k) { if (items.length > 1) d.v = k % 2 ? -0.1 : 0.1; });
-      makeSheet({ room: C, anchor: V3(C.cx + 1.7 + (i % 2 ? 0.5 : -0.5), 3.55 - i * 0.42, C.cz + czs[i]), rotY: -Math.PI / 2 + (i % 2 ? 0.1 : -0.1), tint: TINTS[ctint[i]], words: lay, pad: 0.3 });
+      cLast = makeSheet({ room: C, anchor: V3(C.cx + 1.7 + (i % 2 ? 0.5 : -0.5), 3.55 - i * 0.42, C.cz + czs[i]), rotY: -Math.PI / 2 + (i % 2 ? 0.1 : -0.1), tint: TINTS[ctint[i]], words: lay, pad: 0.3 });
       return;
     }
     for (var n = 0; n < 3; n++) {
@@ -1173,7 +1450,7 @@ function buildInstallations() {
     }
     var u = -tot / 2;
     lay.forEach(function (d, k) { d.u = u + d.w / 2; d.v = items.length > 1 ? (k % 2 ? -0.1 : 0.1) : 0; u += d.w + 0.32; });
-    makeSheet({ room: C, anchor: V3(C.cx + 1.7 + (i % 2 ? 0.5 : -0.5), 3.55 - i * 0.42, C.cz + czs[i]), rotY: -Math.PI / 2 + (i % 2 ? 0.1 : -0.1), tint: TINTS[ctint[i]], words: lay, pad: 0.3 });
+    cLast = makeSheet({ room: C, anchor: V3(C.cx + 1.7 + (i % 2 ? 0.5 : -0.5), 3.55 - i * 0.42, C.cz + czs[i]), rotY: -Math.PI / 2 + (i % 2 ? 0.1 : -0.1), tint: TINTS[ctint[i]], words: lay, pad: 0.3 });
   });
 
   // the sentence in its designed order, lettered straight onto the east wall
@@ -1183,7 +1460,11 @@ function buildInstallations() {
     wallLines.forEach(function (ln, k) { g.fillText(ln, 0.02 * PPM, h * (0.3 + 0.4 * k)); });
   });
   var wallText = new THREE.Mesh(new THREE.PlaneGeometry(WW, WH), new THREE.MeshBasicMaterial({ map: wallTex, transparent: true, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }));
-  wallText.rotation.y = -Math.PI / 2; wallText.position.set(C.cx + 4.86, 1.75, C.cz); scene.add(wallText);
+  wallText.rotation.y = Math.PI; wallText.position.set(C.cx + 0.6, 0.95, C.cz + 4.86); scene.add(wallText);   // on the solid south wall, under the quotation marks
+  if (cLast) {                                                       // the author plate hangs just after the last sheet of the falling sentence
+    var th = cLast.group.rotation.y, off = cLast.bx + cLast.W / 2 + 0.95, gp = cLast.group.position;
+    plaque({ room: C, anchor: V3(gp.x + Math.cos(th) * off, gp.y + cLast.by, gp.z - Math.sin(th) * off), rotY: th, W: 1.6, H: 0.32, tint: TINTS[3], text: 'Ellen Lupton & J. Abbott Miller' });
+  }
 
   // big pixel-art quotation marks on the south wall: two heavy "99" glyphs side by side
   var QB = ['.XXX.', 'XXXXX', 'XXXXX', '.XXXX', '..XX.', '.XX..', 'XX...'], QGW = 25, QGH = 7, QCELL = 24, QCS = 0.16;
@@ -1197,18 +1478,21 @@ function buildInstallations() {
   qMesh.rotation.y = Math.PI; qMesh.position.set(C.cx, 2.0, C.cz + 4.86); scene.add(qMesh);
 
   // Orbit: a ring of sheets
-  var O = R('Orbit');
-  for (var k = 0; k < 12; k++) {
-    var a = k * Math.PI / 6 + 0.26, rr = 3.3;
-    makeSheet({ room: O, anchor: V3(O.cx + Math.sin(a) * rr, 2.15 + 0.35 * Math.sin(k * 1.7), O.cz + Math.cos(a) * rr), rotY: a + Math.PI, tint: TINTS[k % 5], words: [{ idx: k, u: 0, v: 0, fs: 0.46 }], pad: 0.3 });
-  }
+  var O = R('Orbit'), TO = ROOM_TEXT['Orbit'], oW = wordsOf(TO), oLast = null;
+  oW.forEach(function (d, k) {
+    var a = k * 2 * Math.PI / oW.length + 0.26, rr = 3.3; d.u = 0; d.v = 0; d.fs = 0.46;
+    oLast = makeSheet({ room: O, anchor: V3(O.cx + Math.sin(a) * rr, 2.15 + 0.35 * Math.sin(k * 1.7), O.cz + Math.cos(a) * rr), rotY: a + Math.PI, tint: TINTS[k % 5], words: [d], pad: 0.3 });
+  });
+  if (oLast) creditUnder(oLast, O, TINTS[(oW.length - 1) % 5], TO.by);
 
   // Fog: four sheets, three overlapping slots
-  var F = R('Fog');
+  var F = R('Fog'), TF = ROOM_TEXT['Fog'], fW = wordsOf(TF), base = Math.floor(fW.length / 4), extra = fW.length % 4, at = 0, fLast = null;
   [0, 1, 2, 3].forEach(function (s2) {
-    var ws = [0, 1, 2].map(function (j) { return { idx: 3 * s2 + j, u: (j - 1) * 2.7, v: 0, fs: 0.38 }; });
-    makeSheet({ room: F, anchor: V3(F.cx - 2.6 + s2 * 0.9, 2.1, F.cz), rotY: -Math.PI / 2, tint: TINTS[[0, 2, 1, 3][s2]], words: ws, pad: 0.5 });
+    var cnt = base + (s2 >= 4 - extra ? 1 : 0), sp = 2.7 * Math.min(1, 3 / cnt);     // any leftover words go to the far sheets
+    var ws = fW.slice(at, at + cnt).map(function (d, j) { d.u = (j - (cnt - 1) / 2) * sp; d.v = 0; d.fs = 0.38; return d; }); at += cnt;
+    fLast = makeSheet({ room: F, anchor: V3(F.cx - 2.6 + s2 * 0.9, 2.1, F.cz), rotY: -Math.PI / 2, tint: TINTS[[0, 2, 1, 3][s2]], words: ws, pad: 0.5 });
   });
+  if (fLast) creditUnder(fLast, F, TINTS[3], TF.by);
 }
 
 /* ---------- player sprite ---------- */
@@ -1224,7 +1508,7 @@ function buildPlayer() {
   onNameChange = function () { if (myTag) { scene.remove(myTag); myTag.material.map.dispose(); myTag.material.dispose(); } myTag = makeTag(myName, true); scene.add(myTag); };
 }
 function makeTag(text, mine) {                                         // a name tag that floats over a walker's head
-  var c = document.createElement('canvas'), g = c.getContext('2d'), font = '600 40px "Libre Franklin", system-ui, "PingFang SC", "Microsoft YaHei", sans-serif';
+  var c = document.createElement('canvas'), g = c.getContext('2d'), font = '500 40px Jost, Futura, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif';
   g.font = font; var w = Math.ceil(Math.min(600, g.measureText(text).width) + 36), h = 64; c.width = w; c.height = h;
   g.fillStyle = mine ? 'rgba(31,63,240,0.92)' : 'rgba(18,21,26,0.82)'; g.fillRect(0, 0, w, h);
   g.font = font; g.fillStyle = '#ffffff'; g.textBaseline = 'middle'; g.fillText(text, 18, h / 2 + 2, w - 36);
@@ -1365,9 +1649,9 @@ function moveJoy(e) {
   var r = pad.getBoundingClientRect(), dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2), dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2), m = Math.hypot(dx, dy);
   if (m > 1) { dx /= m; dy /= m; } joy.x = dx; joy.y = -dy; knob.style.transform = 'translate(calc(-50% + ' + dx * 30 + 'px), calc(-50% + ' + dy * 30 + 'px))';
 }
-pad.addEventListener('pointerdown', function (e) { joyId = e.pointerId; pad.setPointerCapture(e.pointerId); moveJoy(e); });
+pad.addEventListener('pointerdown', function (e) { joyId = e.pointerId; pad.setPointerCapture(e.pointerId); pad.classList.add('on'); moveJoy(e); });
 pad.addEventListener('pointermove', function (e) { if (e.pointerId === joyId) moveJoy(e); });
-function padEnd(e) { if (e.pointerId === joyId) { joyId = null; joy.x = joy.y = 0; knob.style.transform = 'translate(-50%, -50%)'; } }
+function padEnd(e) { if (e.pointerId === joyId) { joyId = null; joy.x = joy.y = 0; knob.style.transform = 'translate(-50%, -50%)'; pad.classList.remove('on'); } }
 pad.addEventListener('pointerup', padEnd); pad.addEventListener('pointercancel', padEnd);
 
 /* ---------- click to walk ---------- */
@@ -1459,7 +1743,7 @@ function computeReading() {
         else if (g > 2.1 * hh) { html += '<i class="br">/</i>'; if (!pauseAfter) pauseAfter = pv.w.t; pauses.push(pv.w.t); }
         else html += ' ';
       }
-      html += '<span class="s' + e.w.voice + '" style="font-size:' + fsFor(e.hs) + 'px;color:' + e.w.panel.tint.ui + '">' + esc(e.w.t) + '</span>';
+      html += '<span class="s' + e.w.voice + '" style="font-size:' + fsFor(e.hs) + 'px;color:var(--ink)">' + esc(e.w.t) + '</span>';
       order.push(e.w);
     });
     html += '</div>'; prevL = L;
@@ -1468,36 +1752,40 @@ function computeReading() {
   var byDist = vis.slice().sort(function (a, b) { return a.dist - b.dist; });
   var dHtml = byDist.map(function (e) { return esc(e.w.t); }).join('<span class="sep">&rsaquo;</span>') || '&nbsp;';
   var hHtml = hid.map(function (e) { return esc(e.w.t); }).join('<span class="sep">&middot;</span>');
-  var fid = 0;
+  var fid = 0, N = curRoom.words.length || 12;
   if (order.length) { if (order[0].i === 0) fid++; for (var k = 1; k < order.length; k++) if (order[k].i === order[k - 1].i + 1) fid++; }
   var inv = null;
   for (var a = 0; a < order.length - 1 && !inv; a++) if (order[a].i > order[a + 1].i) inv = [order[a].t, order[a + 1].t];
-  var note = fid >= 12 ? 'One reading, exactly as designed.' : inv ? '“' + inv[0] + '” is read before “' + inv[1] + '”.' : pauseAfter ? 'A pause opens after “' + pauseAfter + '”.' : hid.length ? 'Part of the sentence is out of sight.' : 'Close to the designed order, with small breaks.';
+  var note = fid >= N ? 'One reading, exactly as designed.' : inv ? '“' + inv[0] + '” is read before “' + inv[1] + '”.' : pauseAfter ? 'A pause opens after “' + pauseAfter + '”.' : hid.length ? 'Part of the sentence is out of sight.' : 'Close to the designed order, with small breaks.';
   var rev = 0; for (var r2 = 1; r2 < order.length; r2++) if (order[r2].i === order[r2 - 1].i - 1) rev++;
-  evalMissions({ order: order, fid: fid, vis: vis.length, lines: lines.length, pauses: pauses, hid: hid.map(function (e) { return e.w.t; }), byDist: byDist, rev: rev, room: curRoom.name, visited: Object.keys(visited).length });
+  evalMissions({ n: N, order: order, fid: fid, vis: vis.length, lines: lines.length, pauses: pauses, hid: hid.map(function (e) { return e.w.t; }), byDist: byDist, rev: rev, room: curRoom.name, visited: Object.keys(visited).length });
   var sig = html + '|' + dHtml + '|' + hHtml + '|' + fid + '|' + note;
   if (sig === lastSig) return; lastSig = sig;
   eyeEl.innerHTML = html; depthEl.innerHTML = dHtml; hidEl.innerHTML = hHtml; hidSec.hidden = !hid.length; noteEl.textContent = note;
-  var st = fid >= 12 ? 'Closed' : fid >= 9 ? 'Ajar' : fid >= 5 ? 'Open' : 'Wide open';
-  statusEl.textContent = st; statusEl.className = 'status' + (fid >= 12 ? '' : ' open');
-  fidEl.textContent = fid + ' of 12 words follow the designer’s order';
-  for (var m = 0; m < 12; m++) meterEl.children[m].className = m < fid ? 'on' : '';
+  var st = fid >= N ? 'Closed' : fid >= N * 0.75 ? 'Ajar' : fid >= N * 0.4 ? 'Open' : 'Wide open';
+  statusEl.textContent = st; statusEl.className = 'status' + (fid >= N ? '' : ' open');
+  fidEl.textContent = fid + ' of ' + N + ' words follow the designer’s order';
+  if (meterEl.children.length !== N) { meterEl.innerHTML = ''; meterEl.style.gridTemplateColumns = 'repeat(' + N + ', 1fr)'; for (var mk = 0; mk < N; mk++) meterEl.appendChild(document.createElement('i')); }
+  for (var m = 0; m < N; m++) meterEl.children[m].className = m < fid ? 'on' : '';
 }
 $('#rmin').addEventListener('click', function () { var r = $('#reading'); r.classList.toggle('min'); this.innerHTML = r.classList.contains('min') ? '+' : '&minus;'; });
 if (window.innerWidth < 721) { $('#reading').classList.add('min'); $('#rmin').textContent = '+'; }
 
 /* ---------- missions ---------- */
 var MISSIONS = [
-  { t: 'Walk into another room and find a place where the whole sentence reads in order.', ok: function (c) { return c.room !== 'Layers' && c.fid >= 12; } },
-  { t: 'Find a place where “closed” reads before “open”.', ok: function (c) { var a = c.order.map(function (w) { return w.i; }), x = a.indexOf(11), y = a.indexOf(8); return c.room !== 'Corner' && x >= 0 && y >= 0 && x < y; } },
+  { t: 'Walk into another room and find a place where the whole sentence reads in order.', ok: function (c) { return c.room !== 'Layers' && c.fid >= c.n; } },
+  { t: 'Find a place where “closed” reads before “open”.', ok: function (c) { var a = c.order.map(function (w) { return w.t; }), x = a.indexOf('closed'), y = a.indexOf('open'); return x >= 0 && y >= 0 && x < y; } },
   { t: 'Find a place where the sentence breaks after “medium;”.', ok: function (c) { return c.pauses.indexOf('medium;') >= 0 && c.order.length >= 10; } },
   { t: 'Stand where “text” is the nearest word to you.', ok: function (c) { return c.byDist.length >= 10 && c.byDist[0].w.t === 'text'; } },
-  { t: 'Find a place where the sentence reads backwards.', ok: function (c) { return c.order.length >= 11 && c.rev >= 9; } },
-  { t: 'Find a place where all twelve words fall on a single line.', ok: function (c) { return c.lines === 1 && c.order.length === 12; } },
+  { t: 'Find a place where the sentence reads backwards.', ok: function (c) { return c.order.length >= c.n - 1 && c.rev >= c.n - 3; } },
+  { t: 'Find a place where every word of a sentence falls on a single line.', ok: function (c) { return c.lines === 1 && c.order.length === c.n; } },
   { t: 'Find a place where fewer than five words follow the designed order.', ok: function (c) { return c.fid <= 4 && c.vis >= 8; } },
   { t: 'Visit all eight rooms.', ok: function (c) { return c.visited >= 8; } }
 ];
-var missionIdx = 0, mScore = 0, mHold = 0, mDone = false, mFlags = [], mTicks = $('#mticks');
+var MS_KEY = 'open-text-room.missions', msSaved = (function () { try { return JSON.parse(localStorage.getItem(MS_KEY) || 'null'); } catch (e) { return null; } })();
+var missionIdx = 0, mScore = 0, mHold = 0, mDone = false, mFlags = [], mTicks = $('#mticks'), mStart = Date.now();
+if (msSaved && typeof msSaved.i === 'number' && msSaved.i >= 0 && msSaved.i <= 8) { missionIdx = msSaved.i | 0; mScore = Math.max(0, msSaved.s | 0); mFlags = Array.isArray(msSaved.f) ? msSaved.f.slice(0, 8).map(Boolean) : []; }
+function saveMissions() { try { localStorage.setItem(MS_KEY, JSON.stringify({ i: missionIdx, s: mScore, f: mFlags })); } catch (e) {} }
 MISSIONS.forEach(function () { mTicks.appendChild(document.createElement('i')); });
 function renderMission() {
   var end = missionIdx >= MISSIONS.length;
@@ -1505,10 +1793,41 @@ function renderMission() {
   $('#mtext').textContent = end ? 'Eight readings from one sentence. Keep walking, or play again.' : MISSIONS[missionIdx].t;
   $('#mskip').textContent = end ? 'Play again' : 'Skip'; $('#mscore').textContent = mScore + ' pts';
   Array.prototype.forEach.call(mTicks.children, function (n, i) { n.className = i < missionIdx ? (mFlags[i] ? 'on' : 'skip') : ''; });
+  var rw = REWARDS[missionIdx], mr = $('#mreward'); mr.textContent = '';
+  if (end) { mr.textContent = unlocked.length + ' of ' + REWARDS.length + ' rewards unlocked'; }
+  else if (rw) { mr.appendChild(document.createTextNode('Reward \u00b7 ')); var bb = document.createElement('b'); bb.textContent = rw.name + (unlocked.indexOf(rw.id) >= 0 ? ' (owned)' : ''); mr.appendChild(bb); mr.appendChild(document.createTextNode(' \u00b7 faster = more points')); }
+  mStart = Date.now(); saveMissions();
+}
+var rwTimer = 0, rwPending = null;
+function showReward(idx, pts, bonus) {
+  var r = REWARDS[idx], card = $('#reward'), cv = $('#rw-av'), g = cv.getContext('2d'), fresh = unlocked.indexOf(r.id) < 0;
+  if (fresh) { unlocked.push(r.id); saveUnlocked(); avSync(); }
+  var tryAv = avCopy(AV); if (r.k === 'acc') { if (tryAv.acc.indexOf(r.v) < 0) tryAv.acc.push(r.v); ['cap'].forEach(function (x) { if (r.v === 'crown' || r.v === 'halo') tryAv.acc = tryAv.acc.filter(function (y) { return y !== x; }); }); } else tryAv[r.k] = r.v;
+  var sh = buildSheet(null, tryAv); g.imageSmoothingEnabled = false; g.clearRect(0, 0, 18, 24); g.drawImage(sh, 0, 0, 18, 24, 0, 0, 18, 24);
+  $('#rw-lab').textContent = 'Mission ' + (idx + 1) + ' complete \u00b7 ' + (fresh ? 'unlocked' : 'already yours');
+  $('#rw-name').textContent = r.name;
+  $('#rw-pts').textContent = '+' + pts + ' pts' + (bonus ? ' \u00b7 speed bonus +' + bonus : '');
+  rwPending = tryAv; card.classList.add('on'); clearTimeout(rwTimer); rwTimer = setTimeout(hideReward, 7000);
+  confetti();
+}
+function hideReward() { $('#reward').classList.remove('on'); rwPending = null; }
+$('#rw-later').addEventListener('click', hideReward);
+$('#rw-wear').addEventListener('click', function () { if (rwPending) { AV = rwPending; avRedraw(); lastPres = ''; toast('Wearing it'); } hideReward(); });
+function confetti() {
+  var cols = ['#2f56ff', '#ffb02e', '#ff3fa4', '#27e0a4', '#9a6bff'];
+  for (var i = 0; i < 46; i++) {
+    var c = document.createElement('i'); c.className = 'confetti'; var a = Math.random() * Math.PI * 2, d = 120 + Math.random() * 260;
+    c.style.background = cols[i % 5]; c.style.opacity = '0.85';
+    c.style.setProperty('--cx', (Math.cos(a) * d).toFixed(0) + 'px'); c.style.setProperty('--cy', (Math.sin(a) * d * 0.7 + 160).toFixed(0) + 'px'); c.style.setProperty('--cr', (Math.random() * 720 - 360).toFixed(0) + 'deg');
+    c.style.width = (6 + Math.random() * 8).toFixed(0) + 'px'; c.style.animationDelay = (Math.random() * 0.12).toFixed(2) + 's';
+    document.body.appendChild(c); setTimeout(function (el) { return function () { el.remove(); }; }(c), 1800);
+  }
 }
 function completeMission() {
-  mDone = true; mHold = 0; mScore += 100; mFlags[missionIdx] = true;
-  var el = $('#mission'); el.classList.add('win'); $('#mlab').textContent = 'Reading found'; $('#mscore').textContent = mScore + ' pts'; toast('+100 reading found');
+  var secs = (Date.now() - mStart) / 1000, bonus = Math.max(0, Math.round(60 - secs / 3)), idx = missionIdx;
+  mDone = true; mHold = 0; mScore += 100 + bonus; mFlags[missionIdx] = true; saveMissions();
+  var el = $('#mission'); el.classList.add('win'); $('#mlab').textContent = 'Reading found'; $('#mscore').textContent = mScore + ' pts';
+  showReward(idx, 100 + bonus, bonus);
   [523, 659, 784, 1047].forEach(function (f, i) { setTimeout(function () { blip(f, 0.25, 0.05); }, i * 90); });
   setTimeout(function () { el.classList.remove('win'); missionIdx++; mDone = false; renderMission(); }, 1900);
 }
@@ -1543,7 +1862,7 @@ applyUi();
 var mapEl = $('#map'), mg = mapEl.getContext('2d');
 function drawMap() {
   var W = mapEl.width, Hh = mapEl.height, cw = (W - 24) / 4, ch = (Hh - 24) / 2, ox = 12, oy = 12;
-  mg.clearRect(0, 0, W, Hh); mg.font = '500 17px "IBM Plex Mono", monospace'; mg.textAlign = 'center';
+  mg.clearRect(0, 0, W, Hh); mg.font = '500 17px "DM Mono", monospace'; mg.textAlign = 'center';
   ROOMS.forEach(function (r) {
     var x = ox + r.col * cw, y = oy + r.row * ch, cur = curRoom === r;
     mg.fillStyle = cur ? '#12151a' : visited[r.id] ? 'rgba(31,63,240,0.22)' : 'rgba(18,21,26,0.08)'; mg.fillRect(x + 3, y + 3, cw - 6, ch - 6);
@@ -1579,7 +1898,7 @@ mapEl.addEventListener('click', function (e) {
 /* ---------- word walls: loose words you put back together ---------- */
 // The sentences on the two walls. Change the words here; each wall keeps its own archive by id.
 var PUZZLES = [
-  { room: 'Word Wall', id: 'wall-1', words: SENT.slice() },
+  { room: 'Word Wall', id: 'wall-1', words: ROOM_TEXT['Word Wall'].w.slice(), voices: ROOM_TEXT['Word Wall'].v, by: ROOM_TEXT['Word Wall'].by },
   { room: 'Word Wall Two', id: 'wall-2', words: ['Meaning', 'emerges', 'through', 'its', 'relationship', 'to', 'other', 'signs', 'within', 'a', 'larger', 'system.'] }
 ];
 var FJ = 'Jost, "Futura PT", Futura, "Century Gothic", sans-serif';
@@ -1638,10 +1957,11 @@ function buildPuzzle(def) {
   var bt = new THREE.CanvasTexture(bc); bt.encoding = THREE.sRGBEncoding; bt.anisotropy = maxAniso;
   var board = new THREE.Mesh(new THREE.PlaneGeometry(BW, BH), new THREE.MeshBasicMaterial({ map: bt, toneMapped: false }));
   board.rotation.y = -Math.PI / 2; board.position.set(pz.xw, by0 - BH / 2, pz.cz); scene.add(board);
+  if (def.by) plaque({ room: R, anchor: V3(pz.xw - 0.06, by0 - 0.17, pz.cz + BW / 2 - 1.0), rotY: -Math.PI / 2, W: 1.4, H: 0.26, tint: TINTS[1], text: def.by });   // whose sentence this is
   // the loose word cards
   var saved = tileLayout[def.id];
   def.words.forEach(function (word, i) {
-    var v = i < 12 ? VOICE_OF[i] : i % 3, fs = 0.2, m = measureWord(word, v, fs), w = m.w + 0.2, h = 0.34;
+    var v = def.voices ? def.voices[i] : i < 12 ? VOICE_OF[i] : i % 3, fs = 0.2, m = measureWord(word, v, fs), w = m.w + 0.2, h = 0.34;
     var tint = TINTS[i % 5], cw = Math.ceil(w * 300), ch = Math.ceil(h * 300);
     var c = boardCanvas(cw, ch, function (g) {
       g.fillStyle = '#ffffff'; g.fillRect(0, 0, cw, ch); g.fillStyle = rgba(tint.c, 0.28); g.fillRect(0, 0, cw, ch);
@@ -1936,7 +2256,7 @@ enterBtn.addEventListener('click', enter);
 $('#about').addEventListener('click', function () { intro.hidden = false; keys = {}; });
 $('#avbtn').addEventListener('click', function () { intro.hidden = false; keys = {}; var st = $('#studio'); if (st.scrollIntoView) st.scrollIntoView({ block: 'center' }); });
 
-var fontSpecs = ['900 40px "Libre Franklin"', '700 40px "Libre Franklin"', '300 40px "Libre Franklin"', 'italic 300 40px Newsreader', '500 40px "IBM Plex Mono"', '400 40px Jost', '700 40px Jost'];
+var fontSpecs = ['700 40px Jost', '800 40px Jost', '500 40px Jost', '600 40px Jost', 'italic 300 40px Newsreader', '400 40px "DM Mono"', '500 40px "DM Mono"', '400 40px Jost', '700 40px Jost'];
 var ready = false;
 function go() { if (ready) return; ready = true; try { start(); } catch (err) { fail('Something went wrong while building the gallery: ' + err.message); } }
 try { Promise.all(fontSpecs.map(function (s) { return document.fonts.load(s); })).then(go, go); } catch (e) { go(); }
