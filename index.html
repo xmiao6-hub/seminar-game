@@ -257,15 +257,29 @@ var $ = function (s) { return document.querySelector(s); };
 /* ---------- Firebase (used only outside claude.ai, e.g. on GitHub Pages) ----------
    Paste your Firebase web config here to let everyone who opens the link walk together and save sentences.
    Leave it as null and the page runs for one person, with sentences kept in that browser. */
-var FIREBASE_CONFIG = null;
-var ON_CLAUDE = !!(window.claude && typeof window.claude.use === 'function');
+var FIREBASE_CONFIG = { databaseURL: 'https://open-text-room-default-rtdb.europe-west1.firebasedatabase.app' };
+function onClaude() { return !!(window.claude && typeof window.claude.use === 'function'); }
 function loadScript(src) { return new Promise(function (res, rej) { var el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = function () { rej(new Error('Could not load ' + src)); }; document.head.appendChild(el); }); }
-var FB_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
-var fbReady = (!ON_CLAUDE && FIREBASE_CONFIG) ? loadScript(FB_SDK + 'firebase-app-compat.js')
-  .then(function () { return Promise.all([loadScript(FB_SDK + 'firebase-auth-compat.js'), loadScript(FB_SDK + 'firebase-database-compat.js')]); })
-  .then(function () { window.firebase.initializeApp(FIREBASE_CONFIG); return window.firebase.auth().signInAnonymously(); })
-  .then(function (cred) { return { db: window.firebase.database(), uid: cred.user.uid }; })
-  .catch(function (e) { if (window.console) console.warn('Firebase unavailable:', e); return null; }) : Promise.resolve(null);
+var FB_SDK = 'https://www.gstatic.com/firebasejs/10.12.2/', backendP = null, fbP = null;
+function whichBackend() {                                           // claude.ai hands the page its runtime a moment after load, so wait briefly before deciding
+  if (!backendP) backendP = new Promise(function (res) {
+    var t0 = Date.now();
+    (function poll() { if (onClaude()) return res('claude'); if (Date.now() - t0 > 2500) return res(FIREBASE_CONFIG ? 'fb' : 'none'); setTimeout(poll, 100); })();
+  });
+  return backendP;
+}
+function getFb() {
+  if (!fbP) fbP = loadScript(FB_SDK + 'firebase-app-compat.js')
+    .then(function () { return Promise.all([FIREBASE_CONFIG.apiKey ? loadScript(FB_SDK + 'firebase-auth-compat.js') : null, loadScript(FB_SDK + 'firebase-database-compat.js')]); })
+    .then(function () {
+      window.firebase.initializeApp(FIREBASE_CONFIG);
+      function localId() { var k = 'open-text-room.fbid', v = null; try { v = localStorage.getItem(k); } catch (e) {} if (!v || !/^[a-z0-9]{8,32}$/.test(v)) { v = 'p' + Math.random().toString(36).slice(2, 12) + Math.random().toString(36).slice(2, 8); try { localStorage.setItem(k, v); } catch (e) {} } return v; }
+      var signIn; try { signIn = FIREBASE_CONFIG.apiKey && window.firebase.auth ? window.firebase.auth().signInAnonymously().then(function (cred) { return cred.user.uid; }, function () { return localId(); }) : Promise.resolve(localId()); } catch (e) { signIn = Promise.resolve(localId()); }
+      return signIn.then(function (uid) { return { db: window.firebase.database(), uid: uid }; });
+    })
+    .catch(function (e) { if (window.console) console.warn('Firebase unavailable:', e); return null; });
+  return fbP;
+}
 var fbDb = null;
 var intro = $('#intro'), enterBtn = $('#enter');
 function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
@@ -1739,9 +1753,10 @@ function deleteItem(x) {
   if (!dbApi || !myId) return; var mine = (shared[myId] || []).filter(function (o) { return o.id !== x.o.id; }); shared[myId] = mine; renderArchive();
   writeMine(mine).catch(function () { pzMsg.textContent = 'Could not delete that one. Try again in a moment.'; });
 }
-function initShared() {
-  if (!ON_CLAUDE) {
-    fbReady.then(function (fb) {
+function initShared() { whichBackend().then(function (b) { if (b === 'claude') initSharedClaude(); else initSharedFb(b); }); }
+function initSharedFb(b) {
+  {
+    (b === 'fb' ? getFb() : Promise.resolve(null)).then(function (fb) {
       if (!fb) { archLoaded = true; renderArchive(); return; }
       fbDb = fb.db; myId = fb.uid;
       var timer = setTimeout(function () { archLoaded = true; renderArchive(); pzMsg.textContent = 'The sentence shelf is slow to answer; it may be out of date.'; }, 10000);
@@ -1750,8 +1765,9 @@ function initShared() {
         shared = next; clearTimeout(timer); archLoaded = true; renderArchive();
       }, function () { clearTimeout(timer); archLoaded = true; renderArchive(); });
     });
-    return;
   }
+}
+function initSharedClaude() {
   Promise.all([window.claude.use('user').catch(function () { return null; }), window.claude.use('db').catch(function () { return null; })]).then(function (r) {
     userApi = r[0]; dbApi = r[1];
     return userApi ? userApi.id().catch(function () { return null; }) : null;
@@ -1792,7 +1808,8 @@ function syncPeers(list) {
     o.tx = clamp(pr.x, -15, 25); o.tz = clamp(pr.z, -10, 10); o.f = typeof pr.f === 'number' && isFinite(pr.f) ? pr.f : 0; o.m = pr.m ? 1 : 0;
     if (o.fresh) { o.cx = o.tx; o.cz = o.tz; o.fresh = false; }
     remoteSheet(o, pr.av);
-    if (nm !== o.name) { o.name = nm; if (o.tag) { scene.remove(o.tag); o.tag.material.map.dispose(); } o.tag = makeTag(nm, false); scene.add(o.tag); }
+    var label = p.isMe ? nm + ' · your other tab' : nm;
+    if (label !== o.name) { o.name = label; if (o.tag) { scene.remove(o.tag); o.tag.material.map.dispose(); } o.tag = makeTag(label, false); scene.add(o.tag); }
   });
   Object.keys(remotes).forEach(function (k) { if (!seen[k]) dropRemote(k); });
   renderWho(names, lobby);
@@ -1805,10 +1822,13 @@ function renderWho(names, lobby) {
   whoEl.appendChild(document.createTextNode('  ' + shown.join(', ')));
 }
 function initRoom() {
-  if (!ON_CLAUDE) {
-    if (!FIREBASE_CONFIG) { whoEl.textContent = 'Solo: multiplayer is not connected on this copy of the page.'; return; }
-    whoEl.textContent = 'Connecting to other players\u2026';
-    fbReady.then(function (fb) {
+  whoEl.textContent = 'Connecting to other players\u2026';
+  whichBackend().then(function (b) { if (b === 'claude') initRoomClaude(); else initRoomFb(b); });
+}
+function initRoomFb(b) {
+  {
+    if (b !== 'fb') { whoEl.textContent = 'Solo: multiplayer is not connected on this copy of the page.'; return; }
+    getFb().then(function (fb) {
       if (!fb) { whoEl.textContent = 'Solo: could not reach the other players.'; return; }
       var tab = Math.random().toString(36).slice(2, 10), meRef = fb.db.ref('players/' + fb.uid + '/' + tab), off = 0;
       meRef.onDisconnect().remove();
@@ -1821,9 +1841,9 @@ function initRoom() {
         syncPeers(list);
       }, function () { roomApi = null; Object.keys(remotes).forEach(dropRemote); whoEl.textContent = 'Solo: the connection to other players closed.'; });
     });
-    return;
   }
-  whoEl.textContent = 'Connecting to other players…';
+}
+function initRoomClaude() {
   window.claude.use('room').then(function (rm) {
     if (!rm) { whoEl.textContent = 'Solo: other players are not available in this view.'; return; }
     roomApi = rm;
@@ -1902,8 +1922,13 @@ function start() {
   enterBtn.disabled = false; enterBtn.textContent = 'Enter the gallery';
   requestAnimationFrame(frame);
 }
+var arrived = false;
 function enter() {
   if (!actx) initAudio();
+  if (!arrived) {                                                  // everyone starts in Layers; a random step apart so two arrivals never stand on the same spot
+    arrived = true;
+    for (var k = 0; k < 12; k++) { var jx = (Math.random() * 2 - 1) * 2.2, jz = 6.4 - Math.random() * 1.6; if (!blocked(jx, jz)) { px = jx; pz = jz; break; } }
+  }
   if (!cleanName(nameIn.value)) { nameIn.value = randName(); setName(nameIn.value); }
   intro.hidden = true; started = true; enterBtn.textContent = 'Return to the gallery'; cv.focus({ preventScroll: true }); blip(260, 0.4, 0.05); toast('Click the floor to walk');
 }
