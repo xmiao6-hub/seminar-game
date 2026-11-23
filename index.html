@@ -129,6 +129,24 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
 #pname { font: 500 18px/1.2 var(--f-reg); padding: 9px 11px; border: 1px solid var(--ink); background: #fbfbf9; color: var(--ink); border-radius: 0; width: min(320px, 100%); min-width: 0; }
 #pname:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
 
+#chat { bottom: calc(max(14px, env(safe-area-inset-bottom, 0px)) + 126px); left: max(16px, env(safe-area-inset-left, 0px)); width: min(232px, calc(100vw - 32px)); display: grid; gap: 6px; padding: 7px 9px 9px; background: var(--glass); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid var(--rule); }
+#chat.min #chatlog, #chat.min .chatrow { display: none; }
+#chatlog { margin: 0; padding: 0; list-style: none; display: grid; gap: 3px; max-height: 78px; overflow-y: auto; font: 400 12.5px/1.3 var(--f-reg); font-synthesis: none; overflow-wrap: anywhere; }
+#chatlog:empty::before { content: 'Say hello. It shows above your head.'; font: 400 10.5px/1.35 var(--f-mono); color: var(--ink-soft); }
+#chatlog b { font-weight: 600; margin-right: 6px; }
+#chatlog li.me b { color: var(--cobalt); }
+#chatlog li.share span { font-style: italic; }
+.chatrow { display: flex; gap: 6px; min-width: 0; }
+#chat > * { min-width: 0; }
+#chatin { width: 0; }
+#chatin { flex: 1; min-width: 0; font: 400 13px/1.2 var(--f-reg); padding: 5px 7px; border: 1px solid var(--ink); background: #fbfbf9; color: var(--ink); border-radius: 0; }
+#chatin:focus-visible { outline: 2px solid #f0287f; outline-offset: 1px; }
+#chatsend { padding: 6px 8px; font-size: 10px; background: #f0287f; color: #fff; border-color: #f0287f; }
+#chat.min #chatshare { display: none; }
+#chat { box-sizing: border-box; }
+#chat .phead .lab b { color: #f0287f; font-weight: 500; }
+@media (max-width: 720px) { #chat { bottom: calc(max(14px, env(safe-area-inset-bottom, 0px)) + 236px); width: min(220px, calc(100vw - 32px)); } #chatlog { max-height: 64px; } }
+body.inpuzzle #chat { bottom: calc(max(14px, env(safe-area-inset-bottom, 0px)) + 126px); }
 #pad { position: fixed; z-index: 6; left: max(16px, env(safe-area-inset-left, 0px)); bottom: max(14px, env(safe-area-inset-bottom, 0px)); width: 112px; height: 112px; border-radius: 50%; display: block; touch-action: none; cursor: grab;
   background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.55) 0 30%, rgba(244,246,248,0.82) 31% 100%); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
   box-shadow: inset 0 0 0 1px rgba(18,21,26,0.22), inset 0 -10px 22px rgba(18,21,26,0.06), 0 10px 26px rgba(18,21,26,0.14); transition: box-shadow 0.2s; }
@@ -250,8 +268,14 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
 }
 @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
 /* ---------- opening animation: the twelve words arrive on acrylic sheets and settle into the sentence ---------- */
-#splash { position: fixed; inset: 0; z-index: 60; background: var(--paper); display: grid; place-items: center; align-content: center; gap: clamp(22px, 4vh, 40px); overflow: hidden; cursor: pointer;
-  background-image: linear-gradient(rgba(18,21,26,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(18,21,26,0.05) 1px, transparent 1px); background-size: 48px 48px; }
+#splash { position: fixed; inset: 0; z-index: 60; background-color: #f6f3ee; display: grid; place-items: center; align-content: center; gap: clamp(22px, 4vh, 40px); overflow: hidden; cursor: pointer;
+  background-image: linear-gradient(rgba(18,21,26,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(18,21,26,0.045) 1px, transparent 1px); background-size: 48px 48px; }
+/* soft acrylic light: four tinted glows that slowly drift behind the sentence */
+#splash::before { content: ''; position: absolute; inset: -20%; z-index: -1; pointer-events: none;
+  background: radial-gradient(38% 42% at 18% 24%, rgba(255,63,164,0.26), transparent 70%), radial-gradient(40% 46% at 84% 22%, rgba(47,86,255,0.22), transparent 70%),
+              radial-gradient(36% 40% at 76% 82%, rgba(39,224,164,0.24), transparent 70%), radial-gradient(34% 38% at 16% 84%, rgba(255,176,46,0.24), transparent 70%); filter: blur(10px); }
+#splash { isolation: isolate; }
+@media (prefers-reduced-motion: no-preference) { #splash::before { animation: spGlow 9s ease-in-out infinite alternate; } @keyframes spGlow { from { transform: translate(-2%, -1%) rotate(-2deg); } to { transform: translate(2%, 1.5%) rotate(2deg); } } }
 #splash.out { transition: transform 0.85s cubic-bezier(.7,0,.2,1), opacity 0.85s; transform: translateY(-104%); }
 #splash.gone { display: none; }
 .sp-line { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 0.18em 0.26em; width: min(1000px, 92vw); font-size: clamp(30px, 6vw, 78px); line-height: 1.12; isolation: isolate; }
@@ -282,14 +306,14 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
 <div id="splash" role="presentation" aria-hidden="true">
   <div class="sp-meta sp-top"><span>Open Text Room</span><span id="sp-count">00 / 12</span></div>
   <div class="sp-line" id="sp-line"></div>
-  <div class="sp-tag">Eight rooms &middot; twelve words &middot; one sentence, many readings</div>
+  <div class="sp-tag">Eight rooms &middot; seven sentences &middot; many readings</div>
   <div class="sp-meta"><span>Language &middot; space &middot; viewer</span><span>Click to skip</span></div>
   <canvas class="sp-walker" id="sp-walker" width="18" height="24"></canvas>
   <div class="sp-bar"></div>
 </div>
 <div id="stage"><canvas id="gl" tabindex="0" aria-label="A gallery of eight rooms with words printed on hanging acrylic sheets and two walls of loose words"></canvas></div>
 
-<div id="brand" class="hud"><b>Open Text Room</b><span class="lab">Eight rooms &middot; T45</span><span id="who"></span><button class="mini txt" id="hintbtn" aria-expanded="true" aria-controls="hint">Hide guide</button>
+<div id="brand" class="hud"><b>Open Text Room</b><span class="lab">Eight rooms &middot; T48</span><span id="who"></span><button class="mini txt" id="hintbtn" aria-expanded="true" aria-controls="hint">Hide guide</button>
   <span id="hint">Click the floor to walk there, or use WASD (Shift runs) or the pad. Drag empty space to turn the camera, scroll to zoom. V switches to eye view. Drag a printed word to slide its sheet (in the steel hall sheets are bolted to scaffolds: drag across to change scaffold, scroll to raise or lower; drag the tubes to move a whole scaffold), Q and E turn it.</span></div>
 <div id="tools" class="hud"><button class="btn" id="eyebtn" aria-pressed="false">Eye view</button><button class="btn" id="snd" aria-pressed="true">Sound</button><button class="btn" id="avbtn">Avatar</button><button class="btn" id="about">About</button></div>
 
@@ -322,6 +346,11 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
     <div class="sec"><span class="lab" id="pzalab">Sentence shelf</span><ol id="pzlist" class="pzlist"></ol></div>
   </div>
 </aside>
+<section id="chat" class="hud" hidden aria-label="Chat with the other players">
+  <div class="phead"><span class="lab">Chat <b id="chatnew"></b></span><button class="mini txt" id="chatshare" type="button" title="Send what you are reading right now">Share</button><button id="chatmin" class="mini" aria-label="Collapse chat" aria-expanded="true">&minus;</button></div>
+  <ol id="chatlog" aria-live="polite"></ol>
+  <form class="chatrow" id="chatform" autocomplete="off"><input id="chatin" maxlength="120" placeholder="Say something&hellip;" aria-label="Message" enterkeyhint="send"><button class="btn" id="chatsend" type="submit">Send</button></form>
+</section>
 <div id="pad" aria-label="Walk control"><span class="pa n"></span><span class="pa s"></span><span class="pa w"></span><span class="pa e"></span><div id="knob"></div></div>
 <div id="toast" role="status"></div>
 <div id="reward" role="dialog" aria-live="polite" aria-label="Reward unlocked">
@@ -1641,6 +1670,8 @@ cv.addEventListener('wheel', function (e) {
 }, { passive: false });
 window.addEventListener('keydown', function (e) {
   if (!started || !intro.hidden) return;
+  if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  if (e.key === 'Enter' || e.key === 't' || e.key === 'T') { e.preventDefault(); openChat(); return; }
   keys[e.code] = true; keys['k_' + String(e.key || '').toLowerCase()] = true; keys.shift = e.shiftKey;
   if (/^Arrow|^Space$/.test(e.code)) e.preventDefault();
   if (e.code === 'KeyV') setEye(!eye);
@@ -1758,6 +1789,7 @@ function computeReading() {
   var byDist = vis.slice().sort(function (a, b) { return a.dist - b.dist; });
   var dHtml = byDist.map(function (e) { return esc(e.w.t); }).join('<span class="sep">&rsaquo;</span>') || '&nbsp;';
   var hHtml = hid.map(function (e) { return esc(e.w.t); }).join('<span class="sep">&middot;</span>');
+  readingNow = order.map(function (w) { return w.t; }).join(' ');
   var fid = 0, N = curRoom.words.length || 12;
   if (order.length) { if (order[0].i === 0) fid++; for (var k = 1; k < order.length; k++) if (order[k].i === order[k - 1].i + 1) fid++; }
   var inv = null;
@@ -2122,7 +2154,7 @@ function makeRemote(peer) {
   o.blob = new THREE.Mesh(new THREE.PlaneGeometry(0.55, 0.55), new THREE.MeshBasicMaterial({ map: softTex, transparent: true, opacity: 0.35, depthWrite: false, toneMapped: false })); o.blob.rotation.x = -Math.PI / 2; scene.add(o.blob);
   remotes[peer] = o; return o;
 }
-function dropRemote(k) { var o = remotes[k]; if (!o) return; [o.mesh, o.blob, o.tag].forEach(function (m) { if (m) scene.remove(m); }); o.tex.dispose(); if (o.tag) o.tag.material.map.dispose(); delete remotes[k]; }
+function dropRemote(k) { var o = remotes[k]; if (!o) return; if (o.bub) { o.bub.material.map.dispose(); } [o.mesh, o.blob, o.tag, o.bub].forEach(function (m) { if (m) scene.remove(m); }); o.tex.dispose(); if (o.tag) o.tag.material.map.dispose(); delete remotes[k]; }
 function syncPeers(list) {
   var seen = {}, names = [], lobby = 0;
   list.forEach(function (p) {
@@ -2136,6 +2168,11 @@ function syncPeers(list) {
     remoteSheet(o, pr.av);
     var label = p.isMe ? nm + ' · your other tab' : nm;
     if (label !== o.name) { o.name = label; if (o.tag) { scene.remove(o.tag); o.tag.material.map.dispose(); } o.tag = makeTag(label, false); scene.add(o.tag); }
+    var said = cleanSay(pr.say);
+    if (said && typeof pr.sid === 'string' && pr.sid !== o.sid) {
+      o.sid = pr.sid; var fresh = typeof pr.st !== 'number' || Math.abs(Date.now() - pr.st) < 90000;
+      if (fresh && !seenSid[pr.sid]) { seenSid[pr.sid] = 1; addChat(nm, said, false, !!pr.sh); setBubble(o, said); }
+    }
   });
   Object.keys(remotes).forEach(function (k) { if (!seen[k]) dropRemote(k); });
   renderWho(names, lobby);
@@ -2178,7 +2215,7 @@ function initRoomClaude() {
 }
 function sendPresence(dt, moving) {
   if (!roomApi || !started) return; presT += dt; if (presT < 0.1) return; presT = 0;
-  var pr = { n: myName, av: AV, x: Math.round(px * 100) / 100, z: Math.round(pz * 100) / 100, f: Math.round(fa * 100) / 100, m: moving ? 1 : 0 }, key = JSON.stringify(pr);
+  var pr = { n: myName, av: AV, x: Math.round(px * 100) / 100, z: Math.round(pz * 100) / 100, f: Math.round(fa * 100) / 100, m: moving ? 1 : 0 }; if (mySay) { pr.say = mySay.t; pr.sid = mySay.id; pr.st = mySay.at; if (mySay.sh) pr.sh = 1; } var key = JSON.stringify(pr);
   var nowMs = Date.now(); if (key === lastPres && nowMs - presAt < 30000) return; lastPres = key; presAt = nowMs; roomApi.presence(pr).catch(function () {});
 }
 function updateRemotes(dt) {
@@ -2190,8 +2227,66 @@ function updateRemotes(dt) {
     o.tex.offset.set(fr / 4, 1 - (sv.view + 1) / 3);
     o.mesh.position.set(o.cx, 0.45, o.cz); o.mesh.rotation.y = Math.atan2(camera.position.x - o.cx, camera.position.z - o.cz); o.mesh.scale.x = (sv.view === 2 && sv.flip) ? -1 : 1;
     o.blob.position.set(o.cx, 0.012, o.cz); if (o.tag) o.tag.position.set(o.cx, 1.22, o.cz);
+    tickBubble(o, o.cx, o.cz);
   });
+  tickBubble(myBub, px, pz); if (myBub.bub) myBub.bub.visible = myBub.bub.visible && !eye;
 }
+
+/* ---------- chat: a speech bubble over your walker, and a short log everyone in the gallery shares ---------- */
+var mySay = null, sayN = 0, seenSid = {}, myBub = {}, readingNow = '', chatEl = $('#chat'), chatLog = $('#chatlog'), chatIn = $('#chatin'), chatNew = $('#chatnew'), unread = 0;
+function cleanSay(v) { return typeof v === 'string' ? v.replace(/[\u0000-\u001f\u007f-\u009f​-‏‪-‮⁠-⁯﻿]/g, '').replace(/\s+/g, ' ').trim().slice(0, 120) : ''; }
+function addChat(who, text, mine, share) {
+  var li = document.createElement('li'); li.className = (mine ? 'me' : '') + (share ? ' share' : '');
+  var b = document.createElement('b'); b.textContent = mine ? 'You' : who; var sp = document.createElement('span'); sp.textContent = share ? '“' + text + '”' : text;
+  li.appendChild(b); li.appendChild(sp); chatLog.appendChild(li);
+  while (chatLog.children.length > 40) chatLog.removeChild(chatLog.firstChild);
+  chatLog.scrollTop = chatLog.scrollHeight;
+  if (!mine) { if (chatEl.classList.contains('min')) { unread++; chatNew.textContent = '· ' + unread + ' new'; } blip(880, 0.06, 0.02); }
+}
+function wrapLines(g, text, maxW) {
+  var out = [], line = '', parts = text.split(/(\s+)/);
+  parts.forEach(function (p) { if (!p) return; var t = line + p; if (g.measureText(t).width > maxW && line.trim()) { out.push(line.trim()); line = p.trim(); } else line = t; });
+  if (line.trim()) out.push(line.trim());
+  var fin = []; out.forEach(function (l) { while (g.measureText(l).width > maxW && l.length > 1) { var k = l.length; while (k > 1 && g.measureText(l.slice(0, k)).width > maxW) k--; fin.push(l.slice(0, k)); l = l.slice(k); } fin.push(l); });
+  if (fin.length > 3) { fin = fin.slice(0, 3); fin[2] = fin[2].replace(/.?$/, '…'); }
+  return fin;
+}
+function makeBubble(text) {                                            // a white speech bubble with a little tail
+  var c = document.createElement('canvas'), g = c.getContext('2d'), font = '400 34px Jost, Futura, system-ui, "PingFang SC", "Microsoft YaHei", sans-serif', pad = 20, lh = 42;
+  g.font = font; var lines = wrapLines(g, text, 460), w = 0; lines.forEach(function (l) { w = Math.max(w, g.measureText(l).width); });
+  w = Math.ceil(w + pad * 2); var bh = lines.length * lh + pad * 1.4, h = Math.ceil(bh + 18); c.width = w + 4; c.height = h + 4;
+  g.fillStyle = '#ffffff'; g.strokeStyle = '#12151a'; g.lineWidth = 3;
+  g.beginPath(); g.moveTo(2, 2); g.lineTo(w + 2, 2); g.lineTo(w + 2, bh + 2); g.lineTo(w / 2 + 14, bh + 2); g.lineTo(w / 2 + 2, h); g.lineTo(w / 2 - 8, bh + 2); g.lineTo(2, bh + 2); g.closePath(); g.fill(); g.stroke();
+  g.font = font; g.fillStyle = '#12151a'; g.textBaseline = 'top'; lines.forEach(function (l, k) { g.fillText(l, pad + 2, pad * 0.7 + 2 + k * lh); });
+  var t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.minFilter = THREE.LinearFilter;
+  var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthWrite: false, depthTest: false, toneMapped: false, transparent: true }));
+  var sc = 0.0042; sp.scale.set(c.width * sc, c.height * sc, 1); sp.renderOrder = 12; sp.userData.h = c.height * sc; return sp;
+}
+function setBubble(o, text) {
+  if (o.bub) { scene.remove(o.bub); o.bub.material.map.dispose(); o.bub.material.dispose(); }
+  o.bub = makeBubble(text); o.bubT = performance.now(); scene.add(o.bub);
+}
+function tickBubble(o, x, z) {
+  if (!o.bub) return; var age = (performance.now() - o.bubT) / 1000;
+  if (age > 8) { scene.remove(o.bub); o.bub.material.map.dispose(); o.bub.material.dispose(); o.bub = null; return; }
+  o.bub.visible = true; o.bub.material.opacity = age > 7 ? 8 - age : 1; o.bub.position.set(x, 1.4 + o.bub.userData.h / 2, z);
+}
+function say(text, share) {
+  text = cleanSay(text); if (!text) return;
+  mySay = { t: text, id: (myId || 'p') + ':' + Date.now().toString(36) + ':' + (++sayN), at: Date.now(), sh: !!share }; seenSid[mySay.id] = 1;
+  addChat(myName, text, true, share); setBubble(myBub, text); lastPres = ''; presT = 1;
+}
+function openChat() { chatEl.hidden = false; setChatMin(false); chatIn.focus(); }
+function setChatMin(v) { chatEl.classList.toggle('min', v); $('#chatmin').innerHTML = v ? '+' : '&minus;'; $('#chatmin').setAttribute('aria-expanded', String(!v)); if (!v) { unread = 0; chatNew.textContent = ''; } }
+$('#chatmin').addEventListener('click', function () { setChatMin(!chatEl.classList.contains('min')); });
+$('#chatform').addEventListener('submit', function (e) { e.preventDefault(); say(chatIn.value, false); chatIn.value = ''; });
+chatIn.addEventListener('keydown', function (e) { if (e.key === 'Escape') { chatIn.blur(); $('#gl').focus(); } e.stopPropagation(); });
+$('#chatshare').addEventListener('click', function () {
+  var t = readingNow ? readingNow : '';
+  if (!t) { toast('No words in view to share'); return; }
+  say((curRoom ? curRoom.name + ': ' : '') + t, true);
+});
+if (window.innerWidth < 721) setChatMin(true);
 
 /* ---------- loop ---------- */
 var last = performance.now(), readT = 0, mapT = 0, spriteFrames = [1, 0, 3, 2];
@@ -2256,7 +2351,7 @@ function enter() {
     for (var k = 0; k < 12; k++) { var jx = (Math.random() * 2 - 1) * 2.2, jz = 6.4 - Math.random() * 1.6; if (!blocked(jx, jz)) { px = jx; pz = jz; break; } }
   }
   if (!cleanName(nameIn.value)) { nameIn.value = randName(); setName(nameIn.value); }
-  intro.hidden = true; started = true; enterBtn.textContent = 'Return to the gallery'; cv.focus({ preventScroll: true }); blip(260, 0.4, 0.05); toast('Click the floor to walk');
+  intro.hidden = true; started = true; chatEl.hidden = false; enterBtn.textContent = 'Return to the gallery'; cv.focus({ preventScroll: true }); blip(260, 0.4, 0.05); toast('Click the floor to walk');
 }
 enterBtn.addEventListener('click', enter);
 $('#about').addEventListener('click', function () { intro.hidden = false; keys = {}; });
