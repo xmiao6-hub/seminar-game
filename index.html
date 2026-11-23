@@ -289,7 +289,7 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
 </div>
 <div id="stage"><canvas id="gl" tabindex="0" aria-label="A gallery of eight rooms with words printed on hanging acrylic sheets and two walls of loose words"></canvas></div>
 
-<div id="brand" class="hud"><b>Open Text Room</b><span class="lab">Eight rooms, twelve words</span><span id="who"></span><button class="mini txt" id="hintbtn" aria-expanded="true" aria-controls="hint">Hide guide</button>
+<div id="brand" class="hud"><b>Open Text Room</b><span class="lab">Eight rooms &middot; version 43</span><span id="who"></span><button class="mini txt" id="hintbtn" aria-expanded="true" aria-controls="hint">Hide guide</button>
   <span id="hint">Click the floor to walk there, or use WASD (Shift runs) or the pad. Drag empty space to turn the camera, scroll to zoom. V switches to eye view. Drag a printed word to slide its sheet (in the steel hall sheets are bolted to scaffolds: drag across to change scaffold, scroll to raise or lower; drag the tubes to move a whole scaffold), Q and E turn it.</span></div>
 <div id="tools" class="hud"><button class="btn" id="eyebtn" aria-pressed="false">Eye view</button><button class="btn" id="snd" aria-pressed="true">Sound</button><button class="btn" id="avbtn">Avatar</button><button class="btn" id="about">About</button></div>
 
@@ -787,6 +787,11 @@ function floorTex(kind) {
     for (var n = 0; n < 9000; n++) { g.fillStyle = r() > 0.5 ? 'rgba(150,160,172,0.045)' : 'rgba(255,255,255,0.35)'; g.fillRect(r() * w, r() * h, 1 + r() * 2, 1 + r() * 2); }
     g.strokeStyle = 'rgba(176,184,194,0.9)'; g.lineWidth = 3; g.strokeRect(0, 0, w, h); g.beginPath(); g.moveTo(256, 0); g.lineTo(256, 512); g.moveTo(0, 256); g.lineTo(512, 256); g.stroke();
   }, [5, 5]);
+  if (kind === 'checker') return canvasTex(512, 512, function (g, w, h) {   // soft linoleum checkerboard, cream and sage
+    for (var i = 0; i < 4; i++) for (var j = 0; j < 4; j++) { g.fillStyle = (i + j) % 2 ? '#cdd8c8' : '#efe9dc'; g.fillRect(i * 128, j * 128, 128, 128); }
+    for (var n = 0; n < 5000; n++) { g.fillStyle = r() > 0.5 ? 'rgba(90,100,80,0.035)' : 'rgba(255,255,255,0.12)'; g.fillRect(r() * w, r() * h, 1 + r() * 3, 1 + r() * 2); }
+    g.strokeStyle = 'rgba(110,120,100,0.25)'; g.lineWidth = 1.5; for (var k = 0; k <= 4; k++) { g.beginPath(); g.moveTo(k * 128, 0); g.lineTo(k * 128, h); g.moveTo(0, k * 128); g.lineTo(w, k * 128); g.stroke(); }
+  }, [4, 4]);
   if (kind === 'tile') return canvasTex(512, 512, function (g, w, h) {
     for (var i = 0; i < 2; i++) for (var j = 0; j < 2; j++) { g.fillStyle = (i + j) % 2 ? '#d9d7ea' : '#cfcde2'; g.fillRect(i * 256, j * 256, 256, 256); }
     g.strokeStyle = 'rgba(80,76,110,0.45)'; g.lineWidth = 3; g.strokeRect(0, 0, w, h); g.beginPath(); g.moveTo(256, 0); g.lineTo(256, 512); g.moveTo(0, 256); g.lineTo(512, 256); g.stroke();
@@ -820,7 +825,7 @@ var ROOM_DEFS = [
   { name: 'Layers', col: 1, row: 1, wall: '#e3e7e6', floor: 'wood', light: 0xfff6e8, ceil: '#f2f4f3', note: 'The designer’s order, from where you start. Step aside and the layers drift apart.' },
   { name: 'Corner', col: 2, row: 1, wall: '#d9e6dd', floor: 'frost', light: 0xf2fff4, ceil: '#eff5f0', note: 'The sentence falls through a column of sheets, letter by letter. Walk around the stack and it tangles.' },
   { name: 'Word Wall', short: 'WALL 1', col: 3, row: 0, wall: '#ece5d6', floor: 'wood2', light: 0xfff2dc, ceil: '#f5f1e8', note: 'The words have fallen loose on the east wall. Drag them down onto the line, left to right, then save your sentence.' },
-  { name: 'Word Wall Two', short: 'WALL 2', col: 3, row: 1, wall: '#dfe6ef', floor: 'concrete', light: 0xeef4ff, ceil: '#eef2f7', note: 'A second wall, a second sentence. Put it together your way and put it on the shelf.' }
+  { name: 'Word Wall Two', short: 'WALL 2', col: 3, row: 1, wall: '#e3eadc', floor: 'checker', light: 0xfff4e4, ceil: '#f4f2ea', note: 'A second wall, a second sentence. Put it together your way and put it on the shelf.' }
 ];
 var ROOMS = [], solids = [], wallMeshes = [], floorMeshes = [];
 ROOM_DEFS.forEach(function (d) {
