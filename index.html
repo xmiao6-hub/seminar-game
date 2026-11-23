@@ -289,7 +289,7 @@ body.hint-off #mission { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 10
 </div>
 <div id="stage"><canvas id="gl" tabindex="0" aria-label="A gallery of eight rooms with words printed on hanging acrylic sheets and two walls of loose words"></canvas></div>
 
-<div id="brand" class="hud"><b>Open Text Room</b><span class="lab">Eight rooms &middot; version 43</span><span id="who"></span><button class="mini txt" id="hintbtn" aria-expanded="true" aria-controls="hint">Hide guide</button>
+<div id="brand" class="hud"><b>Open Text Room</b><span class="lab">Eight rooms &middot; T45</span><span id="who"></span><button class="mini txt" id="hintbtn" aria-expanded="true" aria-controls="hint">Hide guide</button>
   <span id="hint">Click the floor to walk there, or use WASD (Shift runs) or the pad. Drag empty space to turn the camera, scroll to zoom. V switches to eye view. Drag a printed word to slide its sheet (in the steel hall sheets are bolted to scaffolds: drag across to change scaffold, scroll to raise or lower; drag the tubes to move a whole scaffold), Q and E turn it.</span></div>
 <div id="tools" class="hud"><button class="btn" id="eyebtn" aria-pressed="false">Eye view</button><button class="btn" id="snd" aria-pressed="true">Sound</button><button class="btn" id="avbtn">Avatar</button><button class="btn" id="about">About</button></div>
 
@@ -1383,9 +1383,10 @@ function buildInstallations() {
   var L = R('Layers'), P = V3(0, 1.62, 9.45), Dref = 4.6, fsR = 0.3;
   var ref = refLine(seq(0, 4), fsR, -3.2, 0.5, 0.2).concat(refLine(seq(5, 11), fsR, -3.2, -0.12, 0.2));
   var lLast = null;
-  [[0, 3.6, 0], [1, 4.6, 1], [2, 5.6, 2]].forEach(function (s) {
-    var words = ref.filter(function (d) { return d.idx <= 4 ? s[0] === 0 : (d.idx <= 8 ? s[0] === 1 : s[0] === 2); });
-    var lp = makeSheet({ room: L, anchor: V3(P.x, P.y, P.z - s[1]), rotY: 0, tint: TINTS[s[2]], words: scaleRef(words, s[1] / Dref), pad: 0.45 }); if (s[0] === 2) lLast = lp;
+  // five sheets in depth: "Typography is an / interpretive medium; / the text is / open rather / than closed"
+  [[0, 2, 3.6, 0], [3, 4, 4.1, 1], [5, 7, 4.6, 3], [8, 9, 5.1, 4], [10, 11, 5.6, 2]].forEach(function (s, k) {
+    var words = ref.filter(function (d) { return d.idx >= s[0] && d.idx <= s[1]; });
+    var lp = makeSheet({ room: L, anchor: V3(P.x, P.y, P.z - s[2]), rotY: 0, tint: TINTS[s[3]], words: scaleRef(words, s[2] / Dref), pad: 0.4 }); if (k === 4) lLast = lp;
   });
   makeTextSheet({ room: L, anchor: V3(-4.05, 2.15, L.cz - 3.0), rotY: Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[5], title: 'DESIGN PROMPT', size: 0.16, body: 'How could changing the spatial relationships between words affect the way people read and interpret a sentence?' });
   makeTextSheet({ room: L, anchor: V3(-4.05, 2.15, L.cz + 3.0), rotY: Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[3], title: 'DESIGN PROMPT', size: 0.16, body: 'How could the same words create different meanings through changes in visual arrangement?' });
@@ -1394,7 +1395,7 @@ function buildInstallations() {
     var lg = lLast.group.position;
     plaque({ room: L, anchor: V3(lg.x + lLast.bx + lLast.W / 2 - 0.8, lg.y + lLast.by - lLast.H / 2 - 0.32, lg.z + 0.01), rotY: 0, W: 1.6, H: 0.32, tint: TINTS[2], text: 'Ellen Lupton & J. Abbott Miller' });
   }
-  makeTextSheet({ room: L, anchor: V3(4.05, 2.15, L.cz + 3.0), rotY: -Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[2], title: 'ELLEN LUPTON · DECONSTRUCTION AND GRAPHIC DESIGN', size: 0.15, body: '“Typography is an interpretive medium; the text is open rather than closed.” The sentence hung in every room comes from her essay on deconstruction and graphic design.' });
+  makeTextSheet({ room: L, anchor: V3(4.05, 2.15, L.cz - 3.0), rotY: -Math.PI / 2, W: 2.7, H: 2.2, tint: TINTS[2], title: 'ELLEN LUPTON · DECONSTRUCTION AND GRAPHIC DESIGN', size: 0.15, body: '“Typography is an interpretive medium; the text is open rather than closed.” The sentence hung in this room comes from her essay on deconstruction and graphic design.' });
 
   // Sweet Spot: one sheet per word, scaled along rays from one eye position
   var S = R('Sweet Spot'), SP = V3(0, 1.55, -1.8), Dr = 5, fsS = 0.3;
